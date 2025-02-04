@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find twheel_description)/urdf/properties.xacro"/>
+  
+  
+  <xacro:macro name="castor" params="name translation_x translation_y">
+    <link name="${name}_castor">
+      <visual>
+        <geometry>
+          <cylinder radius="${CASTOR_RADIUS}" length="${CASTOR_THICKNESS}"/>
+        </geometry>
+        <material name="castor_color">
+          <color rgba="${CASTOR_COLOR}"/>
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="${CASTOR_COM}"/>
+        <mass value="${CASTOR_M}"/>
+        <inertia 
+          ixx="${CASTOR_Ixx}"
+          ixy="${CASTOR_Ixy}"
+          ixz="${CASTOR_Ixz}"
+          iyy="${CASTOR_Iyy}"
+          iyz="${CASTOR_Iyz}"
+          izz="${CASTOR_Izz}" 
+        />
+      </inertial>
+      <collision>
+        <geometry>
+          <cylinder radius="${CASTOR_RADIUS}" length="${CASTOR_THICKNESS}"/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="${name}_castor_joint" type="continuous">
+      <origin 
+        xyz="
+          ${translation_x} 
+          ${translation_y} 
+          ${CASTOR_RADIUS-(BASE_HEIGHT/2+BASE_ELEVATION)+0.0001}
+        "
+        rpy="${-PI/2} 0 0"
+      />
+      <parent link="base_link"/>
+      <child link="${name}_castor"/>
+      <axis xyz="0.0 0.0 1.0"/>
+    </joint>
+  </xacro:macro>
+  
+  
+</robot>

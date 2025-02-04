@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<robot name="twheel_bot" >
+    <link name="base_footprint" />
+    <link name="base_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://twheel_description/meshes/twheel_base.STL"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="wheel_1">
+        <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.075" length="0.065"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="wheel_2">
+        <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.075" length="0.065"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="wheel_3">
+        <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.075" length="0.065"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="base_laser">
+    <visual>
+        <geometry>
+        <box size="0.1 0.1 0.1"/>
+        </geometry>
+    </visual>
+
+    </link>
+
+    <joint name="sensor_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_laser"/>
+    <origin xyz="0 0 0.35" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+
+
+
+    <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz ="0.0 0.0 0.15" rpy="0.0 0.0 3.14"/>    
+    </joint>
+
+
+    <joint name="wheel_1_joint" type="continuous">
+        <origin xyz="0.295 0.0 -0.075" rpy="0.0 -1.57 0.0"/>
+        <parent link="base_link"/>
+        <child link="wheel_1"/>
+        <axis xyz="0.0 0.0 1.0"/>
+        <limit lower="-3.14" upper="3.14" effort="0.0" velocity="1.0"/>
+    </joint>
+    <joint name="wheel_2_joint" type="continuous">
+        <origin xyz="-0.150 0.250 -0.075" rpy="2.09 -1.57 0.0"/>
+        <parent link="base_link"/>
+        <child link="wheel_2"/>
+        <axis xyz="0.0 0.0 1.0"/>
+        <limit lower="3.14" upper="-3.14" effort="0.0" velocity="1.0"/>
+    </joint>
+    <joint name="wheel_3_joint" type="continuous">
+        <origin xyz="-0.145 -0.250 -0.075" rpy="0.0 -1.57 -2.09"/>
+        <parent link="base_link"/>
+        <child link="wheel_3"/>
+        <axis xyz="0.0 0.0 1.0"/>
+        <limit lower="3.14" upper="-3.14" effort="0.0" velocity="1.0"/>
+    </joint>
+
+
+    <!-- <gazebo>
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+    </gazebo> -->
+
+
+  <!-- <gazebo reference="imu_link">
+  <sensor name="imu_sensor" type="imu">
+   <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+      <ros>
+        <namespace>/demo</namespace>
+        <remapping>~/out:=imu</remapping>
+      </ros>
+      <initial_orientation_as_reference>false</initial_orientation_as_reference>
+    </plugin>
+    <always_on>true</always_on>
+    <update_rate>100</update_rate>
+    <visualize>true</visualize>
+    <imu>
+      <angular_velocity>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </noise>
+        </z>
+      </angular_velocity>
+      <linear_acceleration>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </noise>
+        </z>
+      </linear_acceleration>
+    </imu>
+  </sensor>
+</gazebo> -->
+
+
+
+</robot>

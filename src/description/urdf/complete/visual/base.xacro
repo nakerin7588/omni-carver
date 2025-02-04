@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find xxx_description)/urdf/visual/properties.xacro"/>
+  <xacro:macro name="base_visual_rviz" params="namespace">
+    <visual>
+      <origin xyz="0.0 0.0 ${-BASE_MESH_Z_OFFSET}" rpy="0.0 0.0 ${PI/2}"/>
+      <geometry>
+        <mesh filename="package://${PACKAGE_NAME}/${BASE_MESH_PATH}"/>
+      </geometry>
+      <material name="${namespace}/base_color">
+        <color rgba="${BASE_COLOR}"/>
+      </material>
+    </visual>
+  </xacro:macro>
+  <xacro:macro name="base_visual_gazebo" params="namespace">
+    <visual>
+      <origin xyz="0.0 0.0 ${-BASE_MESH_Z_OFFSET}" rpy="0.0 0.0 ${PI/2}"/>
+      <geometry>
+        <mesh filename="$(find ${PACKAGE_NAME})/${BASE_MESH_PATH}"/>
+      </geometry>
+      <material name="${namespace}/base_color">
+        <color rgba="${BASE_COLOR}"/>
+      </material>
+    </visual>
+  </xacro:macro>
+  <xacro:macro name="base_offset" params="namespace">
+    <joint name="${namespace}/base_offset" type="fixed">
+      <parent link="${namespace}/base_footprint"/>
+      <child link="${namespace}/base_link"/>
+      <origin xyz="0.0 0.0 ${BASE_HEIGHT/2+BASE_ELEVATION}"/>    
+    </joint> 
+  </xacro:macro>
+
+  <!-- Contents-->
+  <xacro:macro name="base_visual" params="namespace">
+    <link name="${namespace}/base_footprint"/>
+    <link name="${namespace}/base_link">
+      <xacro:base_visual_rviz namespace="${namespace}"/>   
+    </link>
+    <xacro:base_offset namespace="${namespace}"/>
+  </xacro:macro>
+</robot>

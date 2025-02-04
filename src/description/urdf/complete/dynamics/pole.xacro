@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find xxx_description)/urdf/visual/properties.xacro"/>
+  
+  <xacro:macro name="pole" params="name translation_x translation_y namespace">
+    <link name="${namespace}/${name}_pole">
+      <collision>
+        <geometry>
+          <cylinder radius="${POLE_RADIUS}" length="${POLE_HEIGHT}"/>
+        </geometry>
+      </collision>      
+    </link>
+    <joint name="${namespace}/${name}_pole_joint" type="fixed">
+      <origin xyz="${translation_x} ${translation_y} ${(BASE_HEIGHT+POLE_HEIGHT)/2}"/>
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/${name}_pole"/>
+    </joint>  
+  </xacro:macro>
+  <xacro:macro name="pole_set" params="namespace">
+    <xacro:pole 
+      name="left_front"
+      translation_x="${POLE_SEPARATION_X/2}"
+      translation_y="${POLE_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+    <xacro:pole 
+      name="right_front"
+      translation_x="${POLE_SEPARATION_X/2}"
+      translation_y="${-POLE_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+    <xacro:pole 
+      name="left_rear"
+      translation_x="${-POLE_SEPARATION_X/2}"
+      translation_y="${POLE_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+    <xacro:pole 
+      name="right_rear"
+      translation_x="${-POLE_SEPARATION_X/2}"
+      translation_y="${-POLE_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+        
+  </xacro:macro>
+</robot>

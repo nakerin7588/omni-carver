@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find twheel_description)/urdf/properties.xacro"/>
+    
+    <xacro:macro name="base" params="path">
+        <link name="base_footprint"/>
+        <link name="base_link">
+            <visual>
+                <origin xyz="0.0 0.0 ${-BASE_MESH_Z_OFFSET}" rpy="0.0 0.0 ${PI/2}"/>
+                <geometry>
+                    <mesh filename="${path}"/>
+                </geometry>
+                <material name="chassis_color">
+                    <color rgba="${BASE_COLOR}"/>
+                </material>
+            </visual>
+            <inertial>
+                <origin xyz="${BASE_COM}"/>
+                <mass value="${BASE_M}"/>
+                <inertia 
+                  ixx="${BASE_Ixx}"
+                  ixy="${BASE_Ixy}"
+                  ixz="${BASE_Ixz}"
+                  iyy="${BASE_Iyy}"
+                  iyz="${BASE_Iyz}"
+                  izz="${BASE_Izz}" 
+                />
+            </inertial>
+            <collision>
+                <geometry>
+                    <box size="${BASE_LENGTH} ${BASE_WIDTH} ${BASE_HEIGHT}"/>
+                </geometry>
+            </collision>   
+        </link>
+        <joint name="base_offset" type="fixed">
+            <parent link="base_footprint"/>
+            <child link="base_link"/>
+            <origin xyz="0.0 0.0 ${BASE_HEIGHT/2+BASE_ELEVATION}"/>    
+        </joint>
+    </xacro:macro>
+</robot>

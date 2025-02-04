@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="twheel">
+  <xacro:include filename="$(find twheel_description)/urdf/twheel.xacro"/>
+  <xacro:include filename="$(find twheel_gazebo)/urdf/graphics.gazebo.xacro"/>  
+  <xacro:include filename="$(find twheel_gazebo)/urdf/sensor.gazebo.xacro"/>  
+  <xacro:include filename="$(find twheel_gazebo)/urdf/ros2_control.gazebo.xacro"/>  
+</robot>

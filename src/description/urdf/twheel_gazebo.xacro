@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="twheel">
+    <xacro:include filename="$(find twheel_description)/urdf/properties.xacro"/>
+    <xacro:include filename="$(find twheel_description)/urdf/base.xacro"/>
+    <xacro:include filename="$(find twheel_description)/urdf/wheel.xacro"/>
+    <xacro:include filename="$(find twheel_description)/urdf/castor.xacro"/>
+    <xacro:include filename="$(find twheel_description)/urdf/sensor.xacro"/>
+    
+    <xacro:base path="$(find ${PACKAGE_NAME})/${BASE_MESH_PATH}"/>
+    <xacro:wheel name="left" translation_y="${WHEEL_SEPARATION/2}"/>
+    <xacro:wheel name="right" translation_y="${-WHEEL_SEPARATION/2}"/>
+    <xacro:castor 
+        name="left_front" 
+        translation_x="${CASTOR_SEPARATION_X/2}" 
+        translation_y="${CASTOR_SEPARATION_Y/2}"
+    />
+    <xacro:castor 
+        name="right_front" 
+        translation_x="${-CASTOR_SEPARATION_X/2}" 
+        translation_y="${CASTOR_SEPARATION_Y/2}"
+    />
+    <xacro:castor 
+        name="left_rear" 
+        translation_x="${CASTOR_SEPARATION_X/2}" 
+        translation_y="${-CASTOR_SEPARATION_Y/2}"
+    />
+    <xacro:castor 
+        name="right_rear" 
+        translation_x="${-CASTOR_SEPARATION_X/2}" 
+        translation_y="${-CASTOR_SEPARATION_Y/2}"
+    />
+    <xacro:sensor_link/>
+</robot>

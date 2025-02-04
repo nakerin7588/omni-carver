@@ -27,7 +27,7 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/dummy_script.py
+
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -48,6 +48,13 @@ install(TARGETS
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
   # add directories here
+  config
+  description
+  launch
+  meshes
+  rviz
+  urdf
+  world
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()

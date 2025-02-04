@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="params_path" value="$(find twheel_description)/config/properties.yaml"/> <!-- Need seperate property for xacro inorder processing -->
+  <xacro:property name="mp" value="${load_yaml(params_path)}"/> <!-- Read in the yaml dict as mp (short for model parameters) -->
+
+  <!-- Mathematics Constants -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <!-- Wheel Visual Properties -->
+  <xacro:property name="WHEEL_RADIUS" value="${mp['wheel_radius']}"/>
+  <xacro:property name="WHEEL_THICKNESS" value="${mp['wheel_thickness']}"/>
+  <xacro:property name="WHEEL_SEPARATION" value="${mp['wheel_separation']}"/>
+  <xacro:property name="WHEEL_COLOR" value="${mp['wheel_color']}"/>
+  <!-- Base Visual Properties -->
+  <xacro:property name="BASE_LENGTH" value="${mp['base_length']}"/>
+  <xacro:property name="BASE_WIDTH" value="${mp['base_width']}"/>
+  <xacro:property name="BASE_HEIGHT" value="${mp['base_height']}"/>
+  <xacro:property name="BASE_ELEVATION" value="${mp['base_elevation']}"/>
+  <xacro:property name="PACKAGE_NAME" value="twheel_description"/>
+  <xacro:property name="BASE_MESH_PATH" value="${mp['base_mesh_path']}"/>
+  <xacro:property name="BASE_MESH_Z_OFFSET" value="${mp['base_mesh_z_offset']}"/>
+  <xacro:property name="BASE_COLOR" value="${mp['base_color']}"/>
+  <!-- Castor Visual Properties -->
+  <xacro:property name="CASTOR_RADIUS" value="${mp['castor_radius']}"/>
+  <xacro:property name="CASTOR_THICKNESS" value="${mp['castor_thickness']}"/>
+  <xacro:property name="CASTOR_SEPARATION_X" value="${mp['castor_separation_x']}"/>
+  <xacro:property name="CASTOR_SEPARATION_Y" value="${mp['castor_separation_y']}"/>
+  <xacro:property name="CASTOR_COLOR" value="${mp['castor_color']}"/> 
+  
+  <!-- Pole Contact Properties-->
+  <xacro:property name="POLE_RADIUS" value="${mp['pole_radius']}"/>
+  <xacro:property name="POLE_HEIGHT" value="${mp['pole_height']}"/>
+  <xacro:property name="POLE_SEPARATION_X" value="${mp['pole_separation_x']}"/>
+  <xacro:property name="POLE_SEPARATION_Y" value="${mp['pole_separation_y']}"/>
+
+  <!-- LIDAR Visual Properties -->
+  <xacro:property name="LIDAR_RADIUS" value="${mp['lidar_radius']}"/>
+  <xacro:property name="LIDAR_THICKNESS" value="${mp['lidar_thickness']}"/>
+  <xacro:property name="LIDAR_OFFSET" value="${mp['lidar_offset']}"/>
+  
+  <!-- CAMERA Visual Properties -->
+  <xacro:property name="CAMERA_OFFSET" value="${mp['camera_offset']}"/>
+  <xacro:property name="CAMERA_HEIGHT" value="${mp['camera_height']}"/>
+
+  
+  <!-- Base Inertial Properties -->
+  <xacro:property name="BASE_M" value="40.0"/>
+  <xacro:property name="BASE_COM" value="0.0002 0.0001 -0.0001"/>
+  <xacro:property name="BASE_Ixx" value="1.79366667"/>
+  <xacro:property name="BASE_Iyy" value="1.28666667"/>
+  <xacro:property name="BASE_Izz" value="0.230966667"/>
+  <xacro:property name="BASE_Ixy" value="0"/>
+  <xacro:property name="BASE_Ixz" value="0"/>
+  <xacro:property name="BASE_Iyz" value="0"/>
+  
+  <!-- Wheel Inertial Properties -->
+  <xacro:property name="WHEEL_M" value="2.9"/>
+  <xacro:property name="WHEEL_COM" value="0 0 0"/>
+  <xacro:property name="WHEEL_Ixx" value="0.00564437"/>
+  <xacro:property name="WHEEL_Iyy" value="0.00564437"/>
+  <xacro:property name="WHEEL_Izz" value="0.01047625"/>
+  <xacro:property name="WHEEL_Ixy" value="0"/>
+  <xacro:property name="WHEEL_Ixz" value="0"/>
+  <xacro:property name="WHEEL_Iyz" value="0"/>
+  
+  <!-- Castor Inertial Properties -->
+  <xacro:property name="CASTOR_M" value="0.2"/>
+  <xacro:property name="CASTOR_COM" value="0 0 0"/>
+  <xacro:property name="CASTOR_Ixx" value="0.00004437"/>
+  <xacro:property name="CASTOR_Iyy" value="0.00004437"/>
+  <xacro:property name="CASTOR_Izz" value="0.00047625"/>
+  <xacro:property name="CASTOR_Ixy" value="0"/>
+  <xacro:property name="CASTOR_Ixz" value="0"/>
+  <xacro:property name="CASTOR_Iyz" value="0"/> 
+  
+  <!-- Joint Properties -->
+  <xacro:property name="U_MAX" value="300"/>
+  <xacro:property name="V_MAX" value="300"/>
+  <xacro:property name="WHEEL_JOINT_DAMP" value="0"/>
+  
+  
+</robot>

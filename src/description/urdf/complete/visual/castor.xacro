@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find xxx_description)/urdf/visual/properties.xacro"/>
+  
+  <!-- Castor Visual-->
+  <xacro:macro name="castor_visual" params="namespace">
+    <visual>
+      <geometry>
+        <cylinder radius="${CASTOR_RADIUS}" length="${CASTOR_THICKNESS}"/>
+      </geometry>
+      <material name="${namespace}/castor_color">
+        <color rgba="${CASTOR_COLOR}"/>
+      </material>
+    </visual>
+  </xacro:macro>
+
+  <!-- Castor Joint-->
+  <xacro:macro name="castor_joint" params="name translation_x translation_y namespace">
+    <joint name="${namespace}/${name}_castor_joint" type="continuous">
+      <origin 
+        xyz="
+          ${translation_x} 
+          ${translation_y} 
+          ${CASTOR_RADIUS-(BASE_HEIGHT/2+BASE_ELEVATION)+0.001}
+        "
+        rpy="${-PI/2} 0 0"
+      />
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/${name}_castor"/>
+      <axis xyz="0.0 0.0 1.0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Castor rviz-->
+  <xacro:macro name="castor_rviz" params="name translation_x translation_y namespace">
+    <link name="${namespace}/${name}_castor">
+      <xacro:castor_visual namespace="${namespace}"/>
+    </link>
+    <xacro:castor_joint
+      name="${name}"
+      translation_x="${translation_x}"
+      translation_y="${translation_y}"
+      namespace="${namespace}"
+    />
+  </xacro:macro>
+  <!-- Contents-->
+  <xacro:macro name="castor_set_visual" params="namespace">
+    <xacro:castor_rviz 
+      name="right_front"
+      translation_x="${CASTOR_SEPARATION_X/2}"
+      translation_y="${CASTOR_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+    <xacro:castor_rviz 
+      name="left_front"
+      translation_x="${CASTOR_SEPARATION_X/2}"
+      translation_y="${-CASTOR_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+    <xacro:castor_rviz 
+      name="right_rear"
+      translation_x="${-CASTOR_SEPARATION_X/2}"
+      translation_y="${CASTOR_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+    <xacro:castor_rviz 
+      name="left_rear"
+      translation_x="${-CASTOR_SEPARATION_X/2}"
+      translation_y="${-CASTOR_SEPARATION_Y/2}"
+      namespace="${namespace}"
+    />
+  </xacro:macro>
+  
+</robot>

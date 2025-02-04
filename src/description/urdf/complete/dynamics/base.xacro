@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find xxx_description)/urdf/visual/properties.xacro"/>
+  <xacro:include filename="$(find xxx_description)/urdf/dynamics/properties.xacro"/>
+  <xacro:include filename="$(find xxx_description)/urdf/visual/base.xacro"/>
+  <xacro:include filename="$(find xxx_description)/urdf/dynamics/pole.xacro"/>
+
+  <!-- Contents-->
+  <xacro:macro name="base" params="namespace">
+    <link name="${namespace}/base_footprint"/>
+    <link name="${namespace}/base_link">
+      <xacro:base_visual_gazebo namespace="${namespace}"/>
+      
+      <inertial>
+        <origin xyz="${BASE_COM}"/>
+        <mass value="${BASE_M}"/>
+        <inertia 
+          ixx="${BASE_Ixx}"
+          ixy="${BASE_Ixy}"
+          ixz="${BASE_Ixz}"
+          iyy="${BASE_Iyy}"
+          iyz="${BASE_Iyz}"
+          izz="${BASE_Izz}" 
+        />
+      </inertial>
+      <collision>
+        <geometry>
+          <box size="${BASE_LENGTH} ${BASE_WIDTH} ${BASE_HEIGHT}"/>
+        </geometry>
+      </collision>
+    </link>
+    
+    <xacro:base_offset namespace="${namespace}"/>
+    <xacro:pole_set namespace="${namespace}"/>
+  </xacro:macro>
+  
+</robot>

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find xxx_description)/urdf/visual/properties.xacro"/>
+  <xacro:include filename="$(find xxx_description)/urdf/dynamics/properties.xacro"/>
+  <xacro:include filename="$(find xxx_description)/urdf/visual/wheel.xacro"/>
+  
+    <!-- Wheel-->
+  <xacro:macro name="wheel" params="name translation_y namespace">
+    <link name="${namespace}/${name}_wheel">
+      <xacro:wheel_visual namespace="${namespace}"/>
+      <inertial>
+        <origin xyz="${WHEEL_COM}"/>
+        <mass value="${WHEEL_M}"/>
+        <inertia 
+          ixx="${WHEEL_Ixx}"
+          ixy="${WHEEL_Ixy}"
+          ixz="${WHEEL_Ixz}"
+          iyy="${WHEEL_Iyy}"
+          iyz="${WHEEL_Iyz}"
+          izz="${WHEEL_Izz}" 
+        />
+      </inertial>
+      <collision>
+        <geometry>
+          <cylinder radius="${WHEEL_RADIUS}" length="${WHEEL_THICKNESS}"/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1000</mu>
+              <mu2>1000</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <xacro:wheel_joint
+      name="${name}"
+      translation_y="${translation_y}"
+      namespace="${namespace}"
+    /> 
+  </xacro:macro>
+
+  <!-- Contents-->
+  <xacro:macro name="wheel_set" params="namespace">
+    <xacro:wheel
+      name="left"
+      translation_y="${WHEEL_SEPARATION/2}"
+      namespace="${namespace}"
+      />
+    <xacro:wheel 
+      name="right"
+      translation_y="${-WHEEL_SEPARATION/2}"
+      namespace="${namespace}"
+    />
+  </xacro:macro>
+</robot>
