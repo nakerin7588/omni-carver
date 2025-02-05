@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="twheel">
-    <xacro:include filename="$(find twheel_description)/urdf/properties.xacro"/>
-    <xacro:include filename="$(find twheel_description)/urdf/base.xacro"/>
-    <xacro:include filename="$(find twheel_description)/urdf/wheel.xacro"/>
-    <xacro:include filename="$(find twheel_description)/urdf/castor.xacro"/>
-    <xacro:include filename="$(find twheel_description)/urdf/sensor.xacro"/>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="omni_carver">
+    <xacro:include filename="$(find omni_carver_description)/urdf/robot/properties.xacro"/>
+    <xacro:include filename="$(find omni_carver_description)/urdf/robot/base.xacro"/>
+    <xacro:include filename="$(find omni_carver_description)/urdf/robot/wheel.xacro"/>
+    <xacro:include filename="$(find omni_carver_description)/urdf/robot/castor.xacro"/>
+    <xacro:include filename="$(find omni_carver_description)/urdf/robot/sensor.xacro"/>
     
     <xacro:base path="$(find ${PACKAGE_NAME})/${BASE_MESH_PATH}"/>
     <xacro:wheel name="left" translation_y="${WHEEL_SEPARATION/2}"/>

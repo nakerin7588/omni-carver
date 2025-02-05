@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<robot name="twheel">
+<robot name="omni_carver">
   <link name="base_footprint"/>
   <link name="base_link">
     <visual>
       <origin xyz="0.0 0.0 -0.018" rpy="0.0 0.0 1.57079632679"/>
       <geometry>
-        <mesh filename="package://twheel_description/meshes/coconut.stl"/>
+        <mesh filename="package://omni_carver_description/meshes/coconut.stl"/>
       </geometry>
       <material name="chassis_color">
         <color rgba="1.0 1.0 1.0 1.0"/>

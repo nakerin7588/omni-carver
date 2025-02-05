@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="twheel">
-    <xacro:include filename="$(find twheel_description)/urdf/properties.xacro"/>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="omni_carver">
+    <xacro:include filename="$(find omni_carver_description)/urdf/robot/properties.xacro"/>
     
     <xacro:macro name="wheel" params="name translation_y">
         <link name="${name}_wheel">

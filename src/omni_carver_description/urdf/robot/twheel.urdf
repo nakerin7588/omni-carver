@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<robot name="twheel_bot" >
+<robot name="omni_carver" >
     <link name="base_footprint" />
     <link name="base_link">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <mesh filename="package://twheel_description/meshes/twheel_base.STL"/>
+                <mesh filename="package://omni_carver_description/meshes/twheel_base.STL"/>
             </geometry>
         </visual>
     </link>
@@ -50,15 +50,11 @@
     <origin xyz="0 0 0.35" rpy="0.0 0.0 0.0"/>
     </joint>
 
-
-
-
     <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
         <child link="base_link"/>
         <origin xyz ="0.0 0.0 0.15" rpy="0.0 0.0 3.14"/>    
     </joint>
-
 
     <joint name="wheel_1_joint" type="continuous">
         <origin xyz="0.295 0.0 -0.075" rpy="0.0 -1.57 0.0"/>
