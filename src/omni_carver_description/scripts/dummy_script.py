@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from description.dummy_module import dummy_function, dummy_var
+from omni_carver_description.dummy_module import dummy_function, dummy_var
 import rclpy
 from rclpy.node import Node
 

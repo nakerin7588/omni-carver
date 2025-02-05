@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(description)
+project(omni_carver_description)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -27,7 +27,6 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -41,20 +40,17 @@ ament_target_dependencies(cpp_node_test rclcpp)
 
 # Install Cpp executables
 install(TARGETS
-  cpp_node_test
   DESTINATION lib/${PROJECT_NAME}
 )
 
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
   # add directories here
-  config
-  description
   launch
   meshes
-  rviz
   urdf
-  world
+  rviz
+  config
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()
