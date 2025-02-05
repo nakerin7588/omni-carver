@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition, UnlessCondition
@@ -20,12 +21,12 @@ def generate_launch_description():
     # Define filenames
     urdf_package = 'omni_carver_description'
     urdf_filename = 'twheel.urdf'
-    rviz_config_filename = 'default_rviz_config.rviz'
+    rviz_config_filename = 'default_description.rviz'
  
     # Set paths to important files
     pkg_share_description = FindPackageShare(urdf_package)
     default_urdf_model_path = PathJoinSubstitution(
-        [pkg_share_description, 'urdf', 'robot', urdf_filename])
+        [pkg_share_description, 'urdf', urdf_filename])
     default_rviz_config_path = PathJoinSubstitution(
         [pkg_share_description, 'rviz', rviz_config_filename])
  

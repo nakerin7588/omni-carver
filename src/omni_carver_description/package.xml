@@ -4,7 +4,7 @@
   <name>omni_carver_description</name>
   <version>0.0.0</version>
   <description>Omni-Carver mobile robot description.</description>
-  <maintainer email="teacher@todo.todo">teacher</maintainer>
+  <maintainer email="nakarin.jett@gmail.com">nakarin</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
