@@ -250,55 +250,7 @@ Visualization Manager:
           Value: true
         rim_right_link:
           Value: true
-        roller_e_rim_back_link:
-          Value: true
-        roller_e_rim_left_link:
-          Value: true
-        roller_e_rim_right_link:
-          Value: true
-        roller_n_rim_back_link:
-          Value: true
-        roller_n_rim_left_link:
-          Value: true
-        roller_n_rim_right_link:
-          Value: true
-        roller_ne_rim_back_link:
-          Value: true
-        roller_ne_rim_left_link:
-          Value: true
-        roller_ne_rim_right_link:
-          Value: true
-        roller_nw_rim_back_link:
-          Value: true
-        roller_nw_rim_left_link:
-          Value: true
-        roller_nw_rim_right_link:
-          Value: true
-        roller_s_rim_back_link:
-          Value: true
-        roller_s_rim_left_link:
-          Value: true
-        roller_s_rim_right_link:
-          Value: true
-        roller_se_rim_back_link:
-          Value: true
-        roller_se_rim_left_link:
-          Value: true
-        roller_se_rim_right_link:
-          Value: true
-        roller_sw_rim_back_link:
-          Value: true
-        roller_sw_rim_left_link:
-          Value: true
-        roller_sw_rim_right_link:
-          Value: true
-        roller_w_rim_back_link:
-          Value: true
-        roller_w_rim_left_link:
-          Value: true
-        roller_w_rim_right_link:
-          Value: true
-      Marker Scale: 0.10000000149011612
+      Marker Scale: 0.20000000298023224
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -311,56 +263,11 @@ Visualization Manager:
             laser_link:
               {}
             rim_back_link:
-              roller_e_rim_back_link:
-                {}
-              roller_n_rim_back_link:
-                {}
-              roller_ne_rim_back_link:
-                {}
-              roller_nw_rim_back_link:
-                {}
-              roller_s_rim_back_link:
-                {}
-              roller_se_rim_back_link:
-                {}
-              roller_sw_rim_back_link:
-                {}
-              roller_w_rim_back_link:
-                {}
+              {}
             rim_left_link:
-              roller_e_rim_left_link:
-                {}
-              roller_n_rim_left_link:
-                {}
-              roller_ne_rim_left_link:
-                {}
-              roller_nw_rim_left_link:
-                {}
-              roller_s_rim_left_link:
-                {}
-              roller_se_rim_left_link:
-                {}
-              roller_sw_rim_left_link:
-                {}
-              roller_w_rim_left_link:
-                {}
+              {}
             rim_right_link:
-              roller_e_rim_right_link:
-                {}
-              roller_n_rim_right_link:
-                {}
-              roller_ne_rim_right_link:
-                {}
-              roller_nw_rim_right_link:
-                {}
-              roller_s_rim_right_link:
-                {}
-              roller_se_rim_right_link:
-                {}
-              roller_sw_rim_right_link:
-                {}
-              roller_w_rim_right_link:
-                {}
+              {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -409,25 +316,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 0.28783243894577026
+      Distance: 0.3716844320297241
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.004481618758291006
+        Y: 0.0077964626252651215
+        Z: 0.023666217923164368
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.33039841055870056
+      Pitch: 0.3703983724117279
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.708584308624268
+      Yaw: 5.688582420349121
     Saved: ~
 Window Geometry:
   Displays:

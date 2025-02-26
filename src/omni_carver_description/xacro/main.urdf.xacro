@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<robot
+	xmlns:xacro="http://www.ros.org/wiki/xacro"
+	name="open_base"
+>
+
+	<xacro:include filename="$(find omni_carver_description)/xacro/rim.urdf.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/xacro/gazebo_control.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/xacro/inertial_macros.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/xacro/lidar.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/xacro/imu.xacro"/>
+	
+	<link name="origin_link"/>
+	<link name="base_link">
+
+	<inertial>
+
+		<mass value="0.07862944645"/>
+		<inertia
+			ixx="0.00002035985530754"
+			ixy="0"
+			ixz="0"
+			iyy="0.00002035985530754"
+			iyz="0"
+			izz="0.00003945961663220"
+		/>
+
+	</inertial>
+	<visual>
+		<origin xyz="0 0 0" rpy="0 0 -1.570796326794896"/>
+		<geometry>
+
+			<mesh filename="package://omni_carver_description/mesh/base.stl"/>
+
+		</geometry>
+		<material name="base_material">
+
+			<color rgba="1 1 1 1"/>
+
+		</material>
+
+	</visual>
+	<collision>
+		<origin xyz="0 0 0" rpy="0 0 1.047197551196597"/>
+		<geometry>
+
+			<mesh filename="package://omni_carver_description/mesh/base.stl"/>
+
+		</geometry>
+
+	</collision>
+
+	</link>
+	<joint
+		name="base_joint"
+		type="fixed"
+	>
+
+		<parent link="origin_link" />
+		<child link="base_link" />
+		<origin
+			xyz="0 0 0.01905"
+		/>
+
+	</joint>
+	<xacro:rim_macro
+		name="left"
+		color="0.3 0 0"
+		xyz="0.02 0.03464101615 0"
+		rpy="-1.570796326794896 0 -0.5235987756"
+	/>
+	<xacro:rim_macro
+		name="back"
+		color="0 0.3 0"
+		xyz="-0.04 0 0"
+		rpy="0 1.570796326794896 3.141592653589793"
+	/>
+	<xacro:rim_macro
+		name="right"
+		color="0 0 0.3"
+		xyz="0.02 -0.03464101615 0"
+		rpy="1.570796326794896 0 0.5235987756"
+	/>
+
+	<xacro:omni_carver_ros2_control/>
+
+	<gazebo>
+		<plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system">
+			<parameters>$(find omni_carver_gazebo)/config/omni_drive_controller.yaml</parameters>
+		</plugin>
+		<plugin name="gz::sim::systems::Sensors" 
+			filename="gz-sim-sensors-system">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+		<plugin
+			name="gz::sim::systems::OdometryPublisher"
+			filename="gz-sim-odometry-publisher-system">
+			<dimensions>3</dimensions>
+			<odom_frame>ground_truth/odom</odom_frame>
+			<robot_base_frame>origin_link</robot_base_frame>
+		</plugin>
+		<plugin filename="gz-sim-imu-system"
+				name="gz::sim::systems::Imu">
+		</plugin>
+		<!-- <plugin
+			filename="gz-sim-physics-system"
+			name="gz::sim::systems::Physics">
+		</plugin> -->
+	</gazebo>
+
+</robot>

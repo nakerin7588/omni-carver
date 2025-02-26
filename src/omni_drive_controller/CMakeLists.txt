@@ -27,7 +27,7 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/dummy_script.py
+  scripts/omni_drive_node_script.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -48,6 +48,7 @@ install(TARGETS
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
   # add directories here
+  config
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()
