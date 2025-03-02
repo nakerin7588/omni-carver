@@ -7,10 +7,19 @@
       <hardware>
           <plugin>gz_ros2_control/GazeboSimSystem</plugin>
       </hardware>
+      <joint name="rim_right_joint">
+        <command_interface name="velocity">
+          <param name="min">-10</param>
+          <param name="max">10</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
       <joint name="rim_left_joint">
         <command_interface name="velocity">
-          <param name="min">-5</param>
-          <param name="max">5</param>
+          <param name="min">-10</param>
+          <param name="max">10</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
@@ -18,24 +27,14 @@
       </joint>
       <joint name="rim_back_joint">
         <command_interface name="velocity">
-          <param name="min">-5</param>
-          <param name="max">5</param>
-        </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-        <state_interface name="effort"/>
-      </joint>
-      <joint name="rim_right_joint">
-        <command_interface name="velocity">
-          <param name="min">-5</param>
-          <param name="max">5</param>
+          <param name="min">-10</param>
+          <param name="max">10</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
       </joint>
     </ros2_control>
-
   </xacro:macro>
 
 </robot>

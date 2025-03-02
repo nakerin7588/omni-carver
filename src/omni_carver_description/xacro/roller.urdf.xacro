@@ -10,7 +10,7 @@
 
 			<inertial>
 
-				<mass value="0.00113845"/>
+				<mass value="0.5"/>
 				<inertia
 					ixx="2.53776e-08"
 					ixy="0"

@@ -15,7 +15,8 @@
 
 	<inertial>
 
-		<mass value="0.07862944645"/>
+		<!-- <mass value="0.07862944645"/> -->
+		<mass value="2"/>
 		<inertia
 			ixx="0.00002035985530754"
 			ixy="0"
@@ -102,10 +103,6 @@
 		<plugin filename="gz-sim-imu-system"
 				name="gz::sim::systems::Imu">
 		</plugin>
-		<!-- <plugin
-			filename="gz-sim-physics-system"
-			name="gz::sim::systems::Physics">
-		</plugin> -->
 	</gazebo>
 
 </robot>

@@ -8,7 +8,7 @@ from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchD
 from launch.actions import RegisterEventHandler, SetEnvironmentVariable
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from ros_gz_bridge.actions import RosGzBridge
 
@@ -20,7 +20,7 @@ def generate_launch_description():
     
     omni_carver_gazebo_path = os.path.join(
         get_package_share_directory('omni_carver_gazebo'))
-
+    
     # Set gazebo sim resource path
     gazebo_resource_path = SetEnvironmentVariable(
         name='GZ_SIM_RESOURCE_PATH',
@@ -62,9 +62,9 @@ def generate_launch_description():
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
-        parameters=[params]
+        parameters=[params],
     )
-
+    
     gz_spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
@@ -72,7 +72,7 @@ def generate_launch_description():
         arguments=['-string', robot_desc,
                    '-x', '0.0',
                    '-y', '0.0',
-                   '-z', '0.02',
+                   '-z', '0.01905',
                    '-R', '0.0',
                    '-P', '0.0',
                    '-Y', '0.0',
@@ -84,14 +84,14 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
-        parameters=[{"use_sim_time": True}]
+        parameters=[{"use_sim_time": True}],
     )
     
     velocity_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["velocity_controllers", "--controller-manager", "/controller_manager"],
-        parameters=[{"use_sim_time": True}]
+        parameters=[{"use_sim_time": True}],    
     )
     
     # Bridge
@@ -114,15 +114,7 @@ def generate_launch_description():
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=gz_spawn_entity,
-                on_exit=[joint_state_broadcaster_spawner
-                         ],
-            )
-        ),
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-               target_action=joint_state_broadcaster_spawner,
-               on_exit=[velocity_controller_spawner
-                        ],
+                on_exit=[joint_state_broadcaster_spawner, velocity_controller_spawner, rviz],
             )
         ),
         gazebo_resource_path,
@@ -131,5 +123,4 @@ def generate_launch_description():
         robot_state_publisher,
         gz_spawn_entity,
         bridge,
-        rviz
     ])

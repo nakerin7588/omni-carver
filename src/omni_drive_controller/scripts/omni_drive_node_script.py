@@ -35,13 +35,6 @@ class inverse_kinematics:
         self.wheel_delta = np.radians(wheel_delta)
         
     def calculate(self, u, v, w):
-        # T = np.array([
-        #             [-1,  0,  0],
-        #             [ 0, -1,  0],
-        #             [ 0,  0,  1] ]) @ np.array([
-        #                                         [np.cos(self.wheel_delta), np.sin(self.wheel_delta), self.wheel_base],
-        #                                         [-np.cos(self.wheel_delta), np.sin(self.wheel_delta), self.wheel_base],
-        #                                         [0, -1, self.wheel_base]    ])
         T = np.array([
                     [np.cos(self.wheel_delta), np.sin(self.wheel_delta), self.wheel_base],
                     [-np.cos(self.wheel_delta), np.sin(self.wheel_delta), self.wheel_base],
@@ -84,6 +77,8 @@ class OmniDriveNode(Node):
         # Set joint control
         self.joints_control = self.create_publisher(Float64MultiArray, "/velocity_controllers/commands", 10)
         
+        # 
+        
         self.get_logger().info('OmniDriveNode has been started')
         
     
@@ -93,17 +88,26 @@ class OmniDriveNode(Node):
         self.joints_control.publish(msg)
     
     def cmd_vel_callback(self, msg:Twist):
-        # wheel_speed = self.forward_kinematics.calculate(msg.linear.x, msg.linear.y, msg.angular.z)
-        # wheel_rpm = self.forward_kinematics.calculate_rpm(wheel_speed)
-        # self.get_logger().info('Wheel RPM: Right: %f, Left: %f, Back: %f' % (wheel_rpm[0], wheel_rpm[1], wheel_rpm[2]))
-        q = self.inverse_kinematics.calculate(msg.linear.y, msg.linear.x, msg.angular.z)
+        q = self.inverse_kinematics.calculate(msg.linear.x, msg.linear.y, msg.angular.z)
         self.publish_joint_speed(q)
         self.get_logger().info('Wheel RPM: Right: %f, Left: %f, Back: %f' % (q[0], q[1], q[2]))
+        self.get_logger().info('Robot velocity: x: %f, y: %f, z: %f' % (msg.linear.x, msg.linear.y, msg.angular.z))
         
     def joint_states_callback(self, msg:JointState):
-        self.wheel_speed.right = msg.velocity[0]
-        self.wheel_speed.left = msg.velocity[1]
-        self.wheel_speed.back = msg.velocity[2]
+        # Initialize indices
+        index_r, index_l, index_b = None, None, None
+
+        # Create a mapping of joint names to their respective indices
+        indices = {name: i for i, name in enumerate(msg.name)}
+
+        # Assign values if they exist in the message
+        index_r = indices.get("rim_right_joint")
+        index_l = indices.get("rim_left_joint")
+        index_b = indices.get("rim_back_joint")
+    
+        self.wheel_speed.right = msg.velocity[index_r]
+        self.wheel_speed.left = msg.velocity[index_l]
+        self.wheel_speed.back = msg.velocity[index_b]
         
 def main(args=None):
     rclpy.init(args=args)
