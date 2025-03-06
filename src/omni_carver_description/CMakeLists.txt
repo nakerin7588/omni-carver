@@ -25,7 +25,7 @@ install(DIRECTORY
   launch
   mesh
   rviz
-  xacro
+  gazebo_description
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()

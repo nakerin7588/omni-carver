@@ -13,15 +13,13 @@ class forward_kinematics:
         self.wheel_radius = wheel_radius
         self.wheel_base = wheel_base
         self.wheel_track = wheel_track
+        twist = np.array([0.0, 0.0, 0.0]) # linear velocity x, y and angular velocity z
 
-    def calculate(self, vx, vy, wz):
-        wheel_speed = [0, 0, 0]
-        wheel_speed[0] = vx - vy - (self.wheel_base + self.wheel_track) * wz
-        wheel_speed[1] = vx + vy + (self.wheel_base + self.wheel_track) * wz
-        wheel_speed[2] = vx + vy - (self.wheel_base + self.wheel_track) * wz
+    def calculate(self, wr, wl, wb):
+        R = 2
 
-        return wheel_speed
-
+        return 1
+    
     def calculate_rpm(self, wheel_speed):
         wheel_rpm = [0, 0, 0]
         for i in range(3):
@@ -30,25 +28,50 @@ class forward_kinematics:
         return wheel_rpm
 
 class inverse_kinematics:
-    def __init__(self, wheel_base=0.04, wheel_delta=30):
+    def __init__(self, wheel_base=0.04, wheel_radius = 0.05):
         self.wheel_base = wheel_base
-        self.wheel_delta = np.radians(wheel_delta)
+        self.wheel_radius = wheel_radius
         
-    def calculate(self, u, v, w):
-        T = np.array([
-                    [np.cos(self.wheel_delta), np.sin(self.wheel_delta), self.wheel_base],
-                    [-np.cos(self.wheel_delta), np.sin(self.wheel_delta), self.wheel_base],
-                    [0, -1, self.wheel_base]    ])
+    def calculate(self, w, vx, vy):
+        """
+        This function calculates the wheel speed based on the robot velocity from this equation:
+        
+        u = 1/r     [   -d -sqrt(3)/2  -1/2         [   w
+                        -d  sqrt(3)/2  -1/2    @        vx
+                        -d  0          1    ]           vy  ]
 
-        q = T@np.array([u, v, w])
+        where:
+            u = [w_r, w_l, w_b]^T
+            d = wheel_base
+            r = wheel_radius
+            w = angular velocity z
+            vx = linear velocity x
+            vy = linear velocity y
         
-        return q
+        Args:
+            w (Float): angular velocity z
+            vx (Float): linear velocity x
+            vy (Float): linear velocity y
+
+        Returns:
+            float array: wheel speed
+        """
+        
+        T = np.array([
+                    [-self.wheel_base, -np.sqrt(3)/2, -1/2],
+                    [-self.wheel_base, np.sqrt(3)/2, -1/2],
+                    [-self.wheel_base, 0, 1]])
+        
+        u = 1/self.wheel_radius * T
+        u = np.dot(u, np.array([w, vx, vy]))
+        
+        return u
     
 class OmniDriveNode(Node):
     def __init__(self):
         super().__init__('omni_drive_node')
         
-        self.declare_parameter('wheel_radius', 0.05)
+        self.declare_parameter('wheel_radius', 0.038)
         self.declare_parameter('wheel_base', 0.04)
         self.declare_parameter('wheel_track', 0.15)
         self.declare_parameter('wheel_delta', 30) # Degrees
@@ -72,7 +95,7 @@ class OmniDriveNode(Node):
         
         # Get the inverse kinematics
         self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
-        self.inverse_kinematics = inverse_kinematics(self.wheel_base, self.get_parameter('wheel_delta').value)
+        self.inverse_kinematics = inverse_kinematics(self.wheel_base, self.wheel_radius)
         
         # Set joint control
         self.joints_control = self.create_publisher(Float64MultiArray, "/velocity_controllers/commands", 10)
@@ -88,7 +111,7 @@ class OmniDriveNode(Node):
         self.joints_control.publish(msg)
     
     def cmd_vel_callback(self, msg:Twist):
-        q = self.inverse_kinematics.calculate(msg.linear.x, msg.linear.y, msg.angular.z)
+        q = self.inverse_kinematics.calculate(msg.angular.z, msg.linear.x, msg.linear.y)
         self.publish_joint_speed(q)
         self.get_logger().info('Wheel RPM: Right: %f, Left: %f, Back: %f' % (q[0], q[1], q[2]))
         self.get_logger().info('Robot velocity: x: %f, y: %f, z: %f' % (msg.linear.x, msg.linear.y, msg.angular.z))

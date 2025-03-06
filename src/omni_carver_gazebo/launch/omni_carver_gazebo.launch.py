@@ -13,7 +13,6 @@ from launch_ros.actions import Node
 from ros_gz_bridge.actions import RosGzBridge
 
 def generate_launch_description():
-    # Launch Arguments
 
     omni_carver_description_path = os.path.join(
         get_package_share_directory('omni_carver_description'))
@@ -49,7 +48,7 @@ def generate_launch_description():
              )
 
     xacro_file = os.path.join(omni_carver_description_path,
-                              'xacro',
+                              'gazebo_description',
                               'main.urdf.xacro')
 
     doc = xacro.process_file(xacro_file, mappings={'use_sim' : 'true'})

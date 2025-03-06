@@ -18,7 +18,7 @@ def generate_launch_description():
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('omni_carver_description'))
     # xacro_file = os.path.join(pkg_path,'description','omni_carver_core.urdf.xacro')
-    xacro_file = os.path.join(pkg_path,'xacro','main.urdf.xacro')
+    xacro_file = os.path.join(pkg_path,'gazebo_description','main.urdf.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     
     # Create a robot_state_publisher node
