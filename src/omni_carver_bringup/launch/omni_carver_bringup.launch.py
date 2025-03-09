@@ -36,6 +36,13 @@ def generate_launch_description():
       ])
     )
     
+    #  Run the BNO055 IMU node
+    bno055_node = Node(
+        package='bno055_usb_stick', 
+        executable='bno055_usb_stick_node_script.py',
+        output='screen',
+    )
+    
     # Launch the omni drive node
     omni_node = Node(
         package='omni_carver_controller',
@@ -54,5 +61,6 @@ def generate_launch_description():
         robot_description,
         omni_node,
         ldlidar_launch,
+        bno055_node,
         arduino_serial_node
     ])
