@@ -36,14 +36,12 @@
 
 			</visual>
 			<collision>
-				<attach_mesh_shape_feature>true</attach_mesh_shape_feature>
 				<geometry>
 
 					<mesh filename="package://omni_carver_description/mesh/roller.stl">
 					</mesh>
 
 				</geometry>
-				<attach_mesh_shape_feature>true</attach_mesh_shape_feature>
 			</collision>
 
 		</link>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:include filename="$(find omni_carver_description)/xacro/roller.urdf.xacro" />
+	<xacro:include filename="$(find omni_carver_description)/gazebo_description/roller.urdf.xacro" />
 
 	<xacro:macro
 		name="rim_macro"
@@ -40,12 +40,10 @@
 
 			</visual>
 			<collision>
-				<attach_mesh_shape_feature>true</attach_mesh_shape_feature>
 				<geometry>
 					<mesh filename="package://omni_carver_description/mesh/rim.stl">
 					</mesh>
 				</geometry>
-				<attach_mesh_shape_feature>true</attach_mesh_shape_feature>
 			</collision>
 
 		</link>

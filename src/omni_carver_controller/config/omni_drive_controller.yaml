@@ -4,6 +4,8 @@ controller_manager:
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+      # remappings:
+        # joint_states: ros2_control/joint_states
     
     velocity_controllers:
       type: velocity_controllers/JointGroupVelocityController

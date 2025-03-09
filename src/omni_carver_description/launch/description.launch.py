@@ -26,7 +26,7 @@ def generate_launch_description():
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        output='both',
+        output='screen',
         parameters=[params],
         namespace='omni_carver',
     )
@@ -36,17 +36,29 @@ def generate_launch_description():
         executable='joint_state_publisher',
         output='screen',
         parameters=[params],
-        namespace='omni_carver',
+        name='joint_state_publisher',
+        namespace='omni_carver',    
+        # remappings=[('robot_description', '/omni_carver/robot_description')]
+    )
+    
+    joint_state_publisher_gui_node = Node(
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        output='screen',
+        parameters=[params],
+        name='joint_state_publisher_gui',
+        namespace='omni_carver',    
     )
     
     # Launch!
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value='true',
+            default_value='false',
             description='Use sim time if true'), 
         
         robot_state_publisher_node,
         joint_state_publisher_node,
+        # joint_state_publisher_gui_node
         
     ])

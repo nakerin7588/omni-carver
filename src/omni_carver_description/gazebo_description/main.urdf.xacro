@@ -4,13 +4,24 @@
 	name="open_base"
 >
 
-	<xacro:include filename="$(find omni_carver_description)/xacro/rim.urdf.xacro"/>
-	<xacro:include filename="$(find omni_carver_description)/xacro/gazebo_control.xacro"/>
-	<xacro:include filename="$(find omni_carver_description)/xacro/inertial_macros.xacro"/>
-	<xacro:include filename="$(find omni_carver_description)/xacro/lidar.xacro"/>
-	<xacro:include filename="$(find omni_carver_description)/xacro/imu.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/gazebo_description/rim.urdf.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/gazebo_description/gazebo_control.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/gazebo_description/inertial_macros.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/gazebo_description/lidar.xacro"/>
+	<xacro:include filename="$(find omni_carver_description)/gazebo_description/imu.xacro"/>
 	
 	<link name="origin_link"/>
+
+	<joint name="base_footprint_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="origin_link"/>
+		<child link="base_footprint"/>
+	</joint>
+
+	<link name="base_footprint">
+	
+	</link>
+
 	<link name="base_link">
 
 	<inertial>

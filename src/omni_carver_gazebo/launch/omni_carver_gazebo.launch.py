@@ -20,6 +20,9 @@ def generate_launch_description():
     omni_carver_gazebo_path = os.path.join(
         get_package_share_directory('omni_carver_gazebo'))
     
+    omni_carver_controller_path = os.path.join(
+        get_package_share_directory('omni_carver_controller'))
+    
     # Set gazebo sim resource path
     gazebo_resource_path = SetEnvironmentVariable(
         name='GZ_SIM_RESOURCE_PATH',
@@ -35,6 +38,15 @@ def generate_launch_description():
            ]
     )
 
+    robot_description = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    omni_carver_description_path, 'launch'), '/description.launch.py']),
+                launch_arguments=[
+                    ('use_sim_time', 'true'
+                    )
+                ]
+             )
+    
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('ros_gz_sim'), 'launch'), '/gz_sim.launch.py']),
@@ -62,6 +74,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         output='screen',
         parameters=[params],
+        remappings=[('/joint_states', '/omni_carver/joint_states')],
     )
     
     gz_spawn_entity = Node(
@@ -76,7 +89,7 @@ def generate_launch_description():
                    '-P', '0.0',
                    '-Y', '0.0',
                    '-name', 'omni_carver',
-                   '-allow_renaming', 'false'],
+                   '-b'],
     )
     
     joint_state_broadcaster_spawner = Node(
@@ -91,6 +104,12 @@ def generate_launch_description():
         executable="spawner",
         arguments=["velocity_controllers", "--controller-manager", "/controller_manager"],
         parameters=[{"use_sim_time": True}],    
+    )
+    
+    omni_node = Node(
+        package='omni_carver_controller',
+        executable='omni_drive_node_script.py',
+        output='screen',
     )
     
     # Bridge
@@ -113,13 +132,16 @@ def generate_launch_description():
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=gz_spawn_entity,
-                on_exit=[joint_state_broadcaster_spawner, velocity_controller_spawner, rviz],
+                on_exit=[joint_state_broadcaster_spawner, velocity_controller_spawner],
             )
         ),
+        robot_description,
         gazebo_resource_path,
         arguments,
         gazebo,
         robot_state_publisher,
         gz_spawn_entity,
         bridge,
+        omni_node,
+        
     ])

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(omni_drive_controller)
+project(omni_carver_arduino_serial)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -27,7 +27,7 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/omni_drive_node_script.py
+  scripts/dummy_script.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -48,7 +48,6 @@ install(TARGETS
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
   # add directories here
-  config
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()
