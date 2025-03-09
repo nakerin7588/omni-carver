@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(omni_carver_slam)
+project(omni_carver_localization)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -19,11 +19,8 @@ endif()
 find_package(ament_cmake REQUIRED)		# cpp (optional)
 ######################################################
 
-
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
-  # add directories here
-  rviz
   launch
   config
   DESTINATION share/${PROJECT_NAME})
