@@ -28,7 +28,7 @@
   <link name="base_footprint" />
   <link name="base_link">
     <visual>
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 3.14"/>
       <geometry>
           <mesh filename="package://omni_carver_description/mesh/twheel_base.STL"/>
       </geometry>
@@ -40,7 +40,7 @@
   <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
-    <origin xyz ="0.0 0.0 0.15" rpy="0.0 0.0 3.14"/>    
+    <origin xyz ="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>    
   </joint>
 
   <!-- Right front wheel -->
@@ -56,7 +56,7 @@
       </visual>
   </link>
   <joint name="wheel_1_joint" type="continuous">
-    <origin xyz="-0.150 0.250 -0.075" rpy="-1.57 0.0 0.52"/>
+    <origin xyz="0.150 -0.250 -0.075" rpy="1.57 0.0 0.52"/>
     <parent link="base_link"/>
     <child link="wheel_1_link"/>
     <axis xyz="0.0 0.0 1.0"/>
@@ -76,7 +76,7 @@
       </visual>
   </link>
   <joint name="wheel_2_joint" type="continuous">
-    <origin xyz="-0.145 -0.250 -0.075" rpy="1.57 0.0 -0.52"/>
+    <origin xyz="0.145 0.250 -0.075" rpy="-1.57 0.0 -0.52"/>
     <parent link="base_link"/>
     <child link="wheel_2_link"/>
     <axis xyz="0.0 0.0 1.0"/>
@@ -96,7 +96,7 @@
       </visual>
   </link>
   <joint name="wheel_3_joint" type="continuous">
-    <origin xyz="0.295 0.0 -0.075" rpy="0.0 1.57 0.0"/>
+    <origin xyz="-0.295 0.0 -0.075" rpy="0.0 -1.57 0.0"/>
     <parent link="base_link"/>
     <child link="wheel_3_link"/>
     <axis xyz="0.0 0.0 1.0"/>
