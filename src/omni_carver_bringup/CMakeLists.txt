@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(omni_carver_description)
+project(omni_carver_bringup)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -23,10 +23,6 @@ find_package(ament_cmake REQUIRED)		# cpp (optional)
 install(DIRECTORY
   # add directories here
   launch
-  mesh
-  rviz
-  gazebo_description
-  description
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()

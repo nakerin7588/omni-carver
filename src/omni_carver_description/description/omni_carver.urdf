@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<robot name="omni_carver" >
+
+  <!-- Materials -->
+  <material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="blue"> 
+    <color rgba="0.0 0.0 1.0 1.0"/>
+  </material>
+  <material name="green"> 
+    <color rgba="0.0 1.0 0.0 1.0"/>
+  </material>
+  <material name="red">
+    <color rgba="1.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+  <material name="grey">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+
+  <!-- Inertial -->
+  <!-- <xacro:include filename="$(find omni_carver_description)/description/inertial_macros.xacro"/> -->
+
+  <!-- Base footprint & base link -->
+  <link name="base_footprint" />
+  <link name="base_link">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+          <mesh filename="package://omni_carver_description/mesh/twheel_base.STL"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz ="0.0 0.0 0.15" rpy="0.0 0.0 3.14"/>    
+  </joint>
+
+
+  <!-- Right front wheel -->
+  <link name="wheel_1_link">
+      <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+          <geometry>
+            <cylinder radius="0.075" length="0.065"/>           
+          </geometry>
+          <material name="blue"> 
+            <color rgba="0.0 0.0 1.0 1.0"/>
+          </material>
+      </visual>
+  </link>
+  <joint name="wheel_1_joint" type="continuous">
+    <origin xyz="-0.150 0.250 -0.075" rpy="-1.57 0.0 0.52"/>
+    <parent link="base_link"/>
+    <child link="wheel_1_link"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit lower="3.14" upper="-3.14" effort="0.0" velocity="1.0"/>
+  </joint>
+
+  <!-- Left front wheel -->
+  <link name="wheel_2_link">
+      <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+          <geometry>
+            <cylinder radius="0.075" length="0.065"/>         
+          </geometry>
+          <material name="red">
+            <color rgba="1.0 0.0 0.0 1.0"/>
+          </material>
+      </visual>
+  </link>
+  <joint name="wheel_2_joint" type="continuous">
+    <origin xyz="-0.145 -0.250 -0.075" rpy="1.57 0.0 -0.52"/>
+    <parent link="base_link"/>
+    <child link="wheel_2_link"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit lower="3.14" upper="-3.14" effort="0.0" velocity="1.0"/>
+  </joint>
+
+  <!-- Rear wheel -->
+  <link name="wheel_3_link">
+      <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+          <geometry>
+            <cylinder radius="0.075" length="0.065"/>
+          </geometry>
+          <material name="green"> 
+            <color rgba="0.0 1.0 0.0 1.0"/>
+          </material>
+      </visual>
+  </link>
+  <joint name="wheel_3_joint" type="continuous">
+    <origin xyz="0.295 0.0 -0.075" rpy="0.0 1.57 0.0"/>
+    <parent link="base_link"/>
+    <child link="wheel_3_link"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit lower="-3.14" upper="3.14" effort="0.0" velocity="1.0"/>
+  </joint>
+
+  <!-- Laser -->
+  <link name="laser_link">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+    <origin xyz="0 0 0.35" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!-- IMU -->
+
+</robot>
