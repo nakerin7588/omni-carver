@@ -6,6 +6,7 @@ from sensor_msgs.msg import Imu
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 from bno055_usb_stick_py import BnoUsbStick
 import numpy as np
+import threading
 
 class BNO055USBSTICKNode(Node):
     def __init__(self):
@@ -16,38 +17,54 @@ class BNO055USBSTICKNode(Node):
             durability=QoSDurabilityPolicy.VOLATILE
         )
         self.publisher = self.create_publisher(Imu, 'imu/data', qos_profile)
-        self.timer = self.create_timer(1/30, self.timer_callback)
-        
+        self.timer = self.create_timer(1/50, self.timer_callback)
+
         self.bno_usb_stick = BnoUsbStick(port='/dev/ttyACM0')
-        self.prev_gyro = [0, 0, 0]
+        
+        self.latest_packet = None
+        self.data_lock = threading.Lock()
+        
+        self.prev_package = None
+
+        self.stream_thread = threading.Thread(target=self.imu_streaming, daemon=True)
+        self.stream_thread.start()
+
+    def imu_streaming(self):
+        self.bno_usb_stick.activate_streaming()
+        for package in self.bno_usb_stick.recv_streaming_generator():
+            with self.data_lock:
+                self.latest_packet = package
 
     def timer_callback(self):
-        self.bno_usb_stick.activate_streaming()
-        for package in self.bno_usb_stick.recv_streaming_generator(num_packets=1):
-            # I use data from gyro for fusion with wheel odometry, So i will check the data error from gyro only.
-            if np.any(np.array(package.g) >= 300):
-                # print('Error data from gyro')
-                # print(self.prev_gyro)
-                break
-            else:
-                self.prev_gyro = package.g
-                # print(self.prev_gyro)
-        
+        with self.data_lock:
+            package = self.latest_packet
+
+        if package is None:
+            self.get_logger().info("No data received yet.")
+            return
+
+        # Check for abnormal gyro data: if any value >= 300, use previous valid data.
+        if np.any(np.array(package.g) >= 300):
+            package = self.prev_package
+        else:
+            self.prev_package = package
+
         imu_msg = Imu()
         imu_msg.header.stamp = self.get_clock().now().to_msg()
         imu_msg.header.frame_id = 'imu_link'
-        imu_msg.orientation.x = package.quaternion[1]
-        imu_msg.orientation.y = package.quaternion[2]
-        imu_msg.orientation.z = package.quaternion[3]
-        imu_msg.orientation.w = package.quaternion[0]
-        imu_msg.angular_velocity.x = package.g[0]
-        imu_msg.angular_velocity.y = package.g[1]
-        imu_msg.angular_velocity.z = package.g[2]
-        imu_msg.linear_acceleration.x = package.lin_a[0]
-        imu_msg.linear_acceleration.y = package.lin_a[1]
-        imu_msg.linear_acceleration.z = package.lin_a[2]
-        self.publisher.publish(imu_msg)
+        imu_msg.orientation.x = self.prev_package.quaternion[1]
+        imu_msg.orientation.y = self.prev_package.quaternion[2]
+        imu_msg.orientation.z = self.prev_package.quaternion[3]
+        imu_msg.orientation.w = self.prev_package.quaternion[0]
+        imu_msg.angular_velocity.x = self.prev_package.g[0]
+        imu_msg.angular_velocity.y = self.prev_package.g[1]
+        imu_msg.angular_velocity.z = self.prev_package.g[2]
+        imu_msg.linear_acceleration.x = self.prev_package.lin_a[0]
+        imu_msg.linear_acceleration.y = self.prev_package.lin_a[1]
+        imu_msg.linear_acceleration.z = self.prev_package.lin_a[2]
         
+        self.publisher.publish(imu_msg)
+
 def main(args=None):
     rclpy.init(args=args)
     node = BNO055USBSTICKNode()

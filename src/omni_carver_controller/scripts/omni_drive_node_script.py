@@ -110,7 +110,7 @@ class OmniDriveNode(Node):
         self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
         
         # Get wheels speed
-        self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
+        self.create_subscription(JointState, '/omni_carver/joint_states', self.joint_states_callback, 10)
         class wheel_speed:
             def __init__(self):
                 self.right = 0
@@ -229,9 +229,9 @@ class OmniDriveNode(Node):
         indices = {name: i for i, name in enumerate(msg.name)}
 
         # Assign values if they exist in the message
-        index_r = indices.get("rim_right_joint")
-        index_l = indices.get("rim_left_joint")
-        index_b = indices.get("rim_back_joint")
+        index_r = indices.get("wheel_1_joint")
+        index_l = indices.get("wheel_2_joint")
+        index_b = indices.get("wheel_3_joint")
     
         self.wheel_speed.right = msg.velocity[index_r]
         self.wheel_speed.left = msg.velocity[index_l]
