@@ -69,22 +69,31 @@ For this robot I use <a href="https://docs.ros.org/en/jazzy/index.html">ROS2 Jaz
 
 See in <a href="src/omni_carver_arduino_serial/scripts/arduino_serial_node_script.py">arduino_serial_node_script.py</a>. This node has task to stream joint states data and send joint velocity command from/to ESP32.
 
+> !WARNING
+> To use this node make sure you install bno055_usb_stick_py, you can simply install it via this command:
+> `python -m pip install pyserial`
+
 ## 2. BNO055 USB stick node
 
 See in <a href="src/bno055_usb_stick/scripts/bno055_usb_stick_node_script.py">bno055_usb_stick_node</a>. This node has task to stream imu's data from BNO055 USB stick via [bno055_usb_stick_py](https://github.com/selyunin/bno055_usb_stick_py).
+
+> !WARNING
+> To use this node make sure you install bno055_usb_stick_py, you can simply install it via this command:
+> `pip install bno055-usb-stick-py`
 
 ## 3. ldlidar_stl_ros2
 
 This package is from LDROBOT who is develop a LD06 lidar. To use LD06, I use this package to communicate between ROS2 and LD06. You can find original github [here](https://github.com/rudislabs/ldlidar_stl_ros2/tree/pr-binning).
 
 > !COUTION
-> To use with slam toolbox, make sure you clone this package from `pr-binning` branch(Same as upper link).
+> To use with slam toolbox, make sure you clone this package from `pr-binning` branch(Same as upper link). And setting up parameter like this [file](src/ldlidar_stl_ros2/launch/ld06.launch.py) to make it compatible with slam toolbox.
 
 ## 4. omni_drive_node
 
 See in <a href="src/omni_carver_controller/scripts/omni_drive_node_script.py">omni_drive_node_script.py</a>. This node is implement kinematics model of 3 omni-wheels mobile robot to calculate twist at base frame of robot to wheel velocity at wheel frame call inverse kinematics and calculate wheel odometry of robot via forward kinematics.
 
 ### Omnidirectional wheel kinematics
+
 
 
 ### Inverse kinematics
@@ -100,15 +109,26 @@ See in <a href="src/omni_carver_description/launch/description.launch.py">descri
 See in <a href="src/omni_carver_localization/launch/ekf.launch.py">ekf.launch.py</a>. This package has contain launch file for EKF from robot localization package to filt wheel odometry and imu togeter to make odometry of robot more smooth and accurate. For robot localization config, I use this guide to custom my config.
 
 > !WARNING
-> At this moment robot have a lot of error form sensor such as IMU or wheel encoder. So it need to tune more to make odometry more accurate.
+> At this moment robot have a lot of error form sensor such as IMU or wheel encoder. So it need to tune more to make odometry more accurate. Additionally, to use this launch file you need to install robot localization package via this command: `sudo apt install ros-jazzy-robot-localization`
 
 ## 7. omni_carver_slam
 
 See in <a href="src/omni_carver_slam/launch/mapping.launch.py">mapping.launch.py</a>. This pacakge has contain launch file for mapping and save map via slam toolbox and nav2.
 
+> !WARNING
+> To use this launch file you need to install slam toolbox and nav2 via this command:
+`sudo apt install ros-jazzy-slam-toolbox`, `sudo apt install ros-jazzy-navigation2`, and `sudo apt install ros-jazzy-nav2-bringup`
+
+> !TIP
+> To launch all launch files that make robot can do mapping run this command `ros2 launch omni_carver_bringup omni_carver_bringup.launch.py`. This launch file will bringup every important launch file for this robot.
+
 # Mapping
 
+After launch `omni_carver_bringup`, you can also launch `ros2 launch omni_carver_slam mapping.launch.py`. It will show up rviz2 window that already presetting for do mapping via slam toolbox. After finish mapping, you can launch
+`ros2 launch omni_carver_slam save_map.launch.py` to save map.
 
+> !TIP
+> To do mapping, I recommend you to move slowly for more accurate map. And after save map, map will appear at home directory.
 
 # Demonstrate
 
