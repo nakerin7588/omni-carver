@@ -23,6 +23,7 @@ find_package(ament_cmake REQUIRED)		# cpp (optional)
 install(DIRECTORY
   launch
   config
+  rviz
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()

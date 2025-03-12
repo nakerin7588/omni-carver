@@ -158,7 +158,7 @@ class OmniDriveNode(Node):
         odom = Odometry()
         odom.header.stamp = self.get_clock().now().to_msg()
         odom.header.frame_id = 'odom'
-        odom.child_frame_id = 'origin_link'
+        odom.child_frame_id = 'base_footprint'
         
         # Get the forward kinematics
         self.robot_wheelodom.w, self.robot_wheelodom.vx, self.robot_wheelodom.vy = self.forward_kinematics.calculate(self.wheel_speed.right, self.wheel_speed.left, self.wheel_speed.back)

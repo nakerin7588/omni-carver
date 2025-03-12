@@ -17,7 +17,7 @@ class BNO055USBSTICKNode(Node):
             durability=QoSDurabilityPolicy.VOLATILE
         )
         self.publisher = self.create_publisher(Imu, 'imu/data', qos_profile)
-        self.timer = self.create_timer(1/50, self.timer_callback)
+        self.timer = self.create_timer(1/100, self.timer_callback)
 
         self.bno_usb_stick = BnoUsbStick(port='/dev/ttyACM0')
         
