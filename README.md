@@ -8,22 +8,28 @@ https://github.com/user-attachments/assets/3435d6dd-67d6-426c-801f-3730e0f8ce20
 <ol>
     <li>
         <a href="#about-the-project">About The Project</a>
-        <ul>
-            <li><a href="#system-architecture">System Architecture</a></li>
-        </ul>
     </li>
     <li>
-        <a href="#robot-setup">Robot setup</a>
-        <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-            <ul>
-                <li><a href="#python-packages">Python packages</a></li>
-                <li><a href="#ros2-packages">ROS2 packages</a></li>
-            </ul>
-        <li><a href="#installation">Installation</a></li>
-        </ul>
+        <a href="#hardware">Hardware</a>
     </li>
-    <li><a href="#contributors">Contributors</a></li>
+    <li>
+        <a href="#firmware-setupesp32-firmware">Firmware setup</a>
+    </li>
+    <li>
+        <a href="#software-setupros2">Software setuo</a>
+    </li>
+    <li>
+        <a href="#mapping">Mapping</a>
+    </li>
+    <li>
+        <a href="#demonstrate">Demonstrate</a>
+    </li>
+    <li>
+        <a href="#issues">Issues</a>
+    </li>
+    <li>
+        <a href="#contributors">Contributors</a>
+    </li>
 </ol>
 
 
@@ -125,8 +131,7 @@ where:
 
 <p align="center"><img src="images/3-omni-robot-kinematics.pptx.png" alt="3-omni-wheel-kinematics" /></p>
 
-$$
-\begin{bmatrix}
+$$\begin{bmatrix}
 u_1 \\
 u_2 \\
 u_3
@@ -142,8 +147,7 @@ u_3
 \omega_{bz} \\
 v_{bx} \\
 v_{by}
-\end{bmatrix}
-$$
+\end{bmatrix}$$
 
 where:
 - $u_1$, $u_2$, $u_3$: Velocities of the wheels
@@ -157,15 +161,13 @@ where:
 
 Because of inverse kinematics equation can be inverse matrix. So forward kinematics will do psedo-inverse of inverse kinematics.
 
-$$
-\begin{bmatrix}
-\vec{\omega}_{bz} \\[6pt]
-\vec{v}_{bx} \\[6pt]
+$$\begin{bmatrix}
+\vec{\omega}_{bz} \\
+\vec{v}_{bx} \\
 \vec{v}_{by}
 \end{bmatrix}
 =
-H^{+} \vec{u}
-$$
+H^{+} \vec{u}$$
 
 where:
 - $\vec{\omega}_{bz}$: Robot angular velocity around the Z-axis
