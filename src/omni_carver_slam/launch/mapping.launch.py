@@ -28,16 +28,27 @@ def generate_launch_description():
                                    'config', 'mapping_async.yaml'),
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
 
-    launch_mapping = Node(
-        parameters=[
-            LaunchConfiguration('slam_params_file'),
-            {'use_sim_time': LaunchConfiguration('use_sim_time')}
-        ],
-        package='slam_toolbox',
-        executable='async_slam_toolbox_node',
-        name='slam_toolbox',
-        output='screen')
+    # launch_mapping = Node(
+    #     parameters=[
+    #         LaunchConfiguration('slam_params_file'),
+    #         {'use_sim_time': LaunchConfiguration('use_sim_time')}
+    #     ],
+    #     package='slam_toolbox',
+    #     executable='async_slam_toolbox_node',
+    #     name='slam_toolbox',
+    #     output='screen')
 
+    launch_mapping = IncludeLaunchDescription(
+      launch_description_source=PythonLaunchDescriptionSource([
+          get_package_share_directory('slam_toolbox'),
+          '/launch/online_async_launch.py'
+      ]),
+      launch_arguments={
+          'slam_params_file': LaunchConfiguration('slam_params_file'),
+          'use_sim_time': LaunchConfiguration('use_sim_time')
+      }.items()
+    )
+    
     rviz = Node(
             package='rviz2',
             executable='rviz2',

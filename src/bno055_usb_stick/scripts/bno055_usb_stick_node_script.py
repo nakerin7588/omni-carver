@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Imu
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
-from bno055_usb_stick_py import BnoUsbStick
+from bno055_usb_stick_py import BnoUsbStick, BNO055     
 import numpy as np
 import threading
 
@@ -24,7 +24,7 @@ class BNO055USBSTICKNode(Node):
         self.latest_packet = None
         self.data_lock = threading.Lock()
         
-        self.prev_package = None
+        self.prev_package = BNO055()
 
         self.stream_thread = threading.Thread(target=self.imu_streaming, daemon=True)
         self.stream_thread.start()

@@ -3,12 +3,11 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
-from launch.actions import RegisterEventHandler, SetEnvironmentVariable
+from launch.actions import RegisterEventHandler, TimerAction
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
-
 
 def generate_launch_description():
 
@@ -57,10 +56,33 @@ def generate_launch_description():
         output='screen',
     )
     
+    # Launch the robot localization node
+    launch_robot_localization = IncludeLaunchDescription(
+      launch_description_source=PythonLaunchDescriptionSource([
+          get_package_share_directory('omni_carver_localization'),
+          '/launch/ekf.launch.py'
+      ])
+    )
+    
+    timer_action_1 = TimerAction(
+        period=5.0,
+        actions=[
+            ldlidar_launch,
+            bno055_node,
+        ],
+    )
+    
+    timer_action_2 = TimerAction(
+        period=10.0,
+        actions=[
+            launch_robot_localization
+        ],
+    )
+    
     return LaunchDescription([
         robot_description,
         omni_node,
-        ldlidar_launch,
-        bno055_node,
-        arduino_serial_node
+        arduino_serial_node,
+        timer_action_1,
+        timer_action_2,
     ])
