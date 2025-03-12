@@ -86,7 +86,7 @@ See in <a href="src/bno055_usb_stick/scripts/bno055_usb_stick_node_script.py">bn
 
 This package is from LDROBOT who is develop a LD06 lidar. To use LD06, I use this package to communicate between ROS2 and LD06. You can find original github [here](https://github.com/rudislabs/ldlidar_stl_ros2/tree/pr-binning).
 
-> [!COUTION]
+> [!CAUTION]
 > To use with slam toolbox, make sure you clone this package from `pr-binning` branch(Same as upper link). And setting up parameter like this [file](src/ldlidar_stl_ros2/launch/ld06.launch.py) to make it compatible with slam toolbox.
 
 ## 4. omni_drive_node
