@@ -113,13 +113,11 @@ See in <a href="src/omni_carver_slam/launch/mapping.launch.py">mapping.launch.py
 
 # Issues
 
-1. 
-2. 
-3. 
-4. 
-5. 
-
-
+1. Old robot stucture has some problem that effected to imu and wheel odometry.
+2. Swing imu data, from first issue that effected direct to imu make imu data lose accuracy.
+3. Lidar has found some part of robot that make map creation error.
+4. Wheel PID tuning is not good, make robot can't reach the setpoint.
+5. Robot jerks when it starts walking and stops walking.
 
 # Contributors
 - Nakarin Jettanatummajit (65340500033)
