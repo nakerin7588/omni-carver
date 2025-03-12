@@ -55,14 +55,14 @@ This project is the part of open-topic research of FRA361 class that focus about
 
 ESP32 is the microcontroller for our robot's low level control that have a PID controller for each motor to control the motor to reach velocity setpoint.
 
-> !NOTE
+> [!NOTE]
 > You can find the ESP32 firmware via this <a href="src/esp32_firmware/esp32/">link</a>. Additionally, I connect ESP32 and NUC by using <a href="https://github.com/pyserial/pyserial">pyserial</a>.
 
 # Software setup(ROS2)
 
 For this robot I use <a href="https://docs.ros.org/en/jazzy/index.html">ROS2 Jazzy</a> to be our middleware to build this robot. And to use this robot to do this task I have to create some new nodes for make this robot can teleop with [teleop_twist_keyboard](https://github.com/ros-teleop/teleop_twist_keyboard), then do mapping with slam toolbox.
 
-> !WARNING
+> [!WARNING]
 > For everything that explain below, you need to install dependencies that tell in that section if you want to use
 > this robot.
 
@@ -70,7 +70,7 @@ For this robot I use <a href="https://docs.ros.org/en/jazzy/index.html">ROS2 Jaz
 
 See in <a href="src/omni_carver_arduino_serial/scripts/arduino_serial_node_script.py">arduino_serial_node_script.py</a>. This node has task to stream joint states data and send joint velocity command from/to ESP32.
 
-> !WARNING
+> [!WARNING]
 > To use this node make sure you install bno055_usb_stick_py, you can simply install it via this command:
 > `python -m pip install pyserial`
 
@@ -78,7 +78,7 @@ See in <a href="src/omni_carver_arduino_serial/scripts/arduino_serial_node_scrip
 
 See in <a href="src/bno055_usb_stick/scripts/bno055_usb_stick_node_script.py">bno055_usb_stick_node</a>. This node has task to stream imu's data from BNO055 USB stick via [bno055_usb_stick_py](https://github.com/selyunin/bno055_usb_stick_py).
 
-> !WARNING
+> [!WARNING]
 > To use this node make sure you install bno055_usb_stick_py, you can simply install it via this command:
 > `pip install bno055-usb-stick-py`
 
@@ -86,7 +86,7 @@ See in <a href="src/bno055_usb_stick/scripts/bno055_usb_stick_node_script.py">bn
 
 This package is from LDROBOT who is develop a LD06 lidar. To use LD06, I use this package to communicate between ROS2 and LD06. You can find original github [here](https://github.com/rudislabs/ldlidar_stl_ros2/tree/pr-binning).
 
-> !COUTION
+> [!COUTION]
 > To use with slam toolbox, make sure you clone this package from `pr-binning` branch(Same as upper link). And setting up parameter like this [file](src/ldlidar_stl_ros2/launch/ld06.launch.py) to make it compatible with slam toolbox.
 
 ## 4. omni_drive_node
