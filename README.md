@@ -84,6 +84,9 @@ This package is from LDROBOT who is develop a LD06 lidar. To use LD06, I use thi
 
 See in <a href="src/omni_carver_controller/scripts/omni_drive_node_script.py">omni_drive_node_script.py</a>. This node is implement kinematics model of 3 omni-wheels mobile robot to calculate twist at base frame of robot to wheel velocity at wheel frame call inverse kinematics and calculate wheel odometry of robot via forward kinematics.
 
+### Omnidirectional wheel kinematics
+
+
 ### Inverse kinematics
 
 ### Forward kinematics
