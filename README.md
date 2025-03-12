@@ -132,20 +132,20 @@ where:
 <p align="center"><img src="images/3-omni-robot-kinematics.pptx.png" alt="3-omni-wheel-kinematics" /></p>
 
 $$\begin{bmatrix}
-u_1 \\
-u_2 \\
+u_1 \\\
+u_2 \\\
 u_3
 \end{bmatrix}
 =
 \frac{1}{r}
 \begin{bmatrix}
--d & -\frac{\sqrt{3}}{2} &  -\frac{1}{2} \\
--d & \frac{\sqrt{3}}{2} & -\frac{1}{2} \\
+-d & -\frac{\sqrt{3}}{2} &  -\frac{1}{2} \\\
+-d & \frac{\sqrt{3}}{2} & -\frac{1}{2} \\\
 -d & 0 & 1
 \end{bmatrix}
 \begin{bmatrix}
-\omega_{bz} \\
-v_{bx} \\
+\omega_{bz} \\\
+v_{bx} \\\
 v_{by}
 \end{bmatrix}$$
 
@@ -162,8 +162,8 @@ where:
 Because of inverse kinematics equation can be inverse matrix. So forward kinematics will do psedo-inverse of inverse kinematics.
 
 $$\begin{bmatrix}
-\vec{\omega}_{bz} \\
-\vec{v}_{bx} \\
+\vec{\omega}_{bz} \\\
+\vec{v}_{bx} \\\
 \vec{v}_{by}
 \end{bmatrix}
 =
