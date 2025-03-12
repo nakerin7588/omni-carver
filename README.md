@@ -94,13 +94,20 @@ See in <a href="src/omni_carver_description/launch/description.launch.py">descri
 
 ## 6. omni_carver_localization
 
-See in <a href="src/omni_carver_localization/launch/ekf.launch.py">ekf.launch.py</a>. This package has contain launch file for EKF from robot localization package to filt wheel odometry and imu togeter to make odometry of robot more smooth and accurate.
+See in <a href="src/omni_carver_localization/launch/ekf.launch.py">ekf.launch.py</a>. This package has contain launch file for EKF from robot localization package to filt wheel odometry and imu togeter to make odometry of robot more smooth and accurate. For robot localization config, I use this guide to custom my config.
+
+> !WARNING
+> At this moment robot have a lot of error form sensor such as IMU or wheel encoder. So it need to tune more to make odometry more accurate.
 
 ## 7. omni_carver_slam
 
 See in <a href="src/omni_carver_slam/launch/mapping.launch.py">mapping.launch.py</a>. This pacakge has contain launch file for mapping and save map via slam toolbox and nav2.
 
 # Mapping
+
+
+
+# Demonstrate
 
 
 
@@ -112,5 +119,7 @@ See in <a href="src/omni_carver_slam/launch/mapping.launch.py">mapping.launch.py
 4. 
 5. 
 
+
+
 # Contributors
-- Nakarin Jettanatummajit(65340500033)
+- Nakarin Jettanatummajit (65340500033)
