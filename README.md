@@ -63,7 +63,8 @@ ESP32 is the microcontroller for our robot's low level control that have a PID c
 For this robot I use <a href="https://docs.ros.org/en/jazzy/index.html">ROS2 Jazzy</a> to be our middleware to build this robot. And to use this robot to do this task I have to create some new nodes for make this robot can teleop with [teleop_twist_keyboard](https://github.com/ros-teleop/teleop_twist_keyboard), then do mapping with slam toolbox.
 
 > !WARNING
-> For everything that explain below, you need to install dependencies that tell in that section if you want to use this robot.
+> For everything that explain below, you need to install dependencies that tell in that section if you want to use
+> this robot.
 
 ## 1. Arduino serial node
 
