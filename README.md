@@ -114,12 +114,12 @@ V_b
 $$
 
 where:
-- $ u_i $: velocity of the wheel $ i $
-- $ r_i $: radius of the wheel $ i $
-- $ \gamma_i $: wheel orientation angle (caster angle)
-- $ \beta_i $: wheel mounting angle relative to robot base
-- $ (x_i, y_i) $: coordinates of wheel $ i $ relative to robot center
-- $ V_b $: robot velocity vector in body frame
+- $u_i$: velocity of the wheel $i$
+- $r_i$: radius of the wheel $i$
+- $\gamma_i$: wheel orientation angle (caster angle)
+- $\beta_i$: wheel mounting angle relative to robot base
+- $(x_i, y_i)$: coordinates of wheel $i$ relative to robot center
+- $V_b$: robot velocity vector in body frame
 
 ### Inverse kinematics
 
@@ -127,31 +127,31 @@ where:
 
 $$
 \begin{bmatrix}
-u_1 \\[6pt]
-u_2 \\[6pt]
+u_1 \\
+u_2 \\
 u_3
 \end{bmatrix}
 =
 \frac{1}{r}
 \begin{bmatrix}
--d & -\frac{\sqrt{3}}{2} &  -\frac{1}{2} \\[6pt]
--d & \frac{\sqrt{3}}{2} & -\frac{1}{2} \\[6pt]
+-d & -\frac{\sqrt{3}}{2} &  -\frac{1}{2} \\
+-d & \frac{\sqrt{3}}{2} & -\frac{1}{2} \\
 -d & 0 & 1
 \end{bmatrix}
 \begin{bmatrix}
-\omega_{bz} \\[6pt]
-v_{bx} \\[6pt]
+\omega_{bz} \\
+v_{bx} \\
 v_{by}
 \end{bmatrix}
 $$
 
 where:
-- $ u_1, u_2, u_3 $: Velocities of the wheels
-- $ r $: Wheel radius
-- $ d $: Distance from the center of the robot to each wheel
-- $ \omega_{bz} $: Angular velocity around the Z-axis (yaw rate)
-- $ v_{bx} $: Linear velocity along the X-axis
-- $ v_{by} $: Linear velocity along the Y-axis
+- $u_1$, $u_2$, $u_3$: Velocities of the wheels
+- $r$: Wheel radius
+- $d$: Distance from the center of the robot to each wheel
+- $\omega_{bz}$: Angular velocity around the Z-axis (yaw rate)
+- $v_{bx}$: Linear velocity along the X-axis
+- $v_{by}$: Linear velocity along the Y-axis
 
 ### Forward kinematics
 
@@ -168,11 +168,11 @@ H^{+} \vec{u}
 $$
 
 where:
-- $ \vec{\omega}_{bz} $: Robot angular velocity around the Z-axis
-- $ \vec{v}_{bx} $: Robot linear velocity along the X-axis
-- $ \vec{v}_{by} $: Robot linear velocity along the Y-axis
-- $ H^{+} $: Pseudoinverse of the kinematic transformation matrix $H$
-- $ \vec{u} $: Vector of wheel velocities
+- $\vec{\omega}_{bz}$: Robot angular velocity around the Z-axis
+- $\vec{v}_{bx}$: Robot linear velocity along the X-axis
+- $\vec{v}_{by}$: Robot linear velocity along the Y-axis
+- $H^{+}$: Pseudoinverse of the kinematic transformation matrix $H$
+- $\vec{u}$: Vector of wheel velocities
 
 ## 5. omni_carver_description
 
