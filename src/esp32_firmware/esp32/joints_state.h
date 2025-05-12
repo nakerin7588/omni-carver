@@ -1,5 +1,5 @@
 /*
- * pid.h
+ * joints_state.h
  *
  *  Created on: Apr 26, 2024
  *      Author: naker
@@ -8,7 +8,7 @@
  #ifndef JOINTS_STATE_H
  #define JOINTS_STATE_H
 
- #define PI 3.14159265359
+ #define PI 3.14159
  #include <cstdint>
 
  //INTEGRAL TERM IS USE BACKWARD EULER RULE
@@ -16,8 +16,8 @@
   int cntprev;    // Count per revolutions of encoder
   int rate;       // Controller loop rate (Hz)
   int diffcnt;     // Diff counter values
-  int64_t total_cnt;  // Total counter values
-  float rad;      // Current position in rads
+  // int64_t total_cnt;  // Total counter values
+  // float rad;      // Current position in rads
   float radps;    // Current velocity in rads / secs
  } joints_state;
 

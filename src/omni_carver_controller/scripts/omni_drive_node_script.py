@@ -12,7 +12,7 @@ import tf2_ros
 from geometry_msgs.msg import TransformStamped
 
 class forward_kinematics:
-    def __init__(self, wheel_base=0.04, wheel_radius = 0.05):
+    def __init__(self, wheel_base=0.065, wheel_radius = 0.075):
         self.wheel_radius = wheel_radius
         self.wheel_base = wheel_base
         self.twist = np.array([0.0, 0.0, 0.0]) # linear velocity x, y and angular velocity z
@@ -54,7 +54,7 @@ class forward_kinematics:
         return self.twist
 
 class inverse_kinematics:
-    def __init__(self, wheel_base=0.04, wheel_radius = 0.05):
+    def __init__(self, wheel_base=0.065, wheel_radius = 0.075):
         self.wheel_base = wheel_base
         self.wheel_radius = wheel_radius
         
@@ -97,8 +97,8 @@ class OmniDriveNode(Node):
     def __init__(self):
         super().__init__('omni_drive_node')
         
-        self.declare_parameter('wheel_radius', 0.038)
-        self.declare_parameter('wheel_base', 0.04)
+        self.declare_parameter('wheel_radius', 0.075)
+        self.declare_parameter('wheel_base', 0.065)
         self.declare_parameter('rate', 100) # Hz
         
         # Get the parameters
@@ -182,21 +182,21 @@ class OmniDriveNode(Node):
         odom.twist.twist.linear.y = self.robot_wheelodom.vy
         odom.twist.twist.angular.z = self.robot_wheelodom.w
         
-        t = TransformStamped()
-        t.header.stamp = self.get_clock().now().to_msg()
-        t.header.frame_id = "odom"
-        t.child_frame_id = "origin_link"
+        # t = TransformStamped()
+        # t.header.stamp = self.get_clock().now().to_msg()
+        # t.header.frame_id = "odom"
+        # t.child_frame_id = "base_footprint"
 
-        t.transform.translation.x = self.robot_wheelodom.x
-        t.transform.translation.y = self.robot_wheelodom.y
-        t.transform.translation.z = 0.0
+        # t.transform.translation.x = self.robot_wheelodom.x
+        # t.transform.translation.y = self.robot_wheelodom.y
+        # t.transform.translation.z = 0.0
         
-        q = quaternion_from_euler(0, 0, self.robot_wheelodom.theta)
+        # q = quaternion_from_euler(0, 0, self.robot_wheelodom.theta)
 
-        t.transform.rotation.x = q[0]
-        t.transform.rotation.y = q[1]
-        t.transform.rotation.z = q[2]
-        t.transform.rotation.w = q[3]
+        # t.transform.rotation.x = q[0]
+        # t.transform.rotation.y = q[1]
+        # t.transform.rotation.z = q[2]
+        # t.transform.rotation.w = q[3]
 
         # self.tf_broadcaster.sendTransform(t)
         self.odom_pub.publish(odom)

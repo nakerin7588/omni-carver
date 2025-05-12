@@ -42,6 +42,15 @@ def generate_launch_description():
         condition=IfCondition(use_jsp_gui)
     )
     
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        parameters=[params],
+        arguments=['-d', os.path.join(pkg_path, 'rviz', 'default_description.rviz')]
+    )
+    
     # Launch!
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -53,5 +62,6 @@ def generate_launch_description():
             default_value='false',
             description='Use joint state publisher GUI if true'),
         robot_state_publisher_node,
-        joint_state_publisher_gui_node
+        joint_state_publisher_gui_node,
+        # rviz_node
     ])

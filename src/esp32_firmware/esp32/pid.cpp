@@ -20,6 +20,10 @@ double Update_pid(PID *pid, double error, float pid_sat, float plant_sat) {
 
 	float e_n = error; // error[n]
 
+  // if(e_n >= 0.01 && e_n <= 0.01){
+  //   pid -> y_n = 0;
+  // }
+
 	if(!(((pid -> y_n >= pid_sat) && e_n > 0) || ((pid -> y_n <= -(pid_sat)) && e_n < 0 ))){
 		pid -> y_n += ((pid -> kp + pid -> kp + pid -> kp) * e_n)
 						- ((pid -> kp + (2 * pid -> kp)) * pid -> e_n_1)
