@@ -31,7 +31,7 @@ const int InB_motorC = 21;
 const int PWM_motorC = 23;
 
 // Encoder
-#define cnt_per_rev 7000
+#define cnt_per_rev 14000
 ESP32Encoder encoderA;
 ESP32Encoder encoderB;
 ESP32Encoder encoderC;
@@ -107,39 +107,39 @@ void setup() {
   Serial.begin(115200);
 
   ESP32Encoder::useInternalWeakPullResistors = puType::up;
-  encoderA.attachHalfQuad(outputB_A, outputA_A);  // current use
-  encoderB.attachHalfQuad(outputB_B, outputA_B);  // no input
-  encoderC.attachHalfQuad(outputB_C, outputA_C);  // no input
-  delay(50);
+  encoderA.attachFullQuad(outputB_A, outputA_A);  // current use
+  encoderB.attachFullQuad(outputB_B, outputA_B);  // no input
+  encoderC.attachFullQuad(outputB_C, outputA_C);  // no input
+  delay(100);
 
   // PID velocity control
   PID_init(&pid_motorA, 0.055, 0.05, 0);  // 0.015, 0.005, 0
   PID_init(&pid_motorB, 0.055, 0.05, 0);  // 0.009, 0.006, 0
-  PID_init(&pid_motorC, 0.1, 0.005, 0);  // 0.015, 0.005, 0
+  PID_init(&pid_motorC, 0.055, 0.05, 0);  // 0.015, 0.005, 0
   // Joints state
   js_init(&encoderA_, cnt_per_rev, rate);
   js_init(&encoderB_, cnt_per_rev, rate);
   js_init(&encoderC_, cnt_per_rev, rate);
 
   //motorA
-  pinMode(outputA_A, INPUT);
-  pinMode(outputB_A, INPUT);
+  pinMode(outputA_A, INPUT_PULLUP);
+  pinMode(outputB_A, INPUT_PULLUP);
 
   pinMode(InA_motorA, OUTPUT);
   pinMode(InB_motorA, OUTPUT);
   pinMode(PWM_motorA, OUTPUT);
 
   //motorB
-  pinMode(outputA_B, INPUT);
-  pinMode(outputB_B, INPUT);
+  pinMode(outputA_B, INPUT_PULLUP);
+  pinMode(outputB_B, INPUT_PULLUP);
 
   pinMode(InA_motorB, OUTPUT);
   pinMode(InB_motorB, OUTPUT);
   pinMode(PWM_motorB, OUTPUT);
 
   //motorC
-  pinMode(outputA_C, INPUT);
-  pinMode(outputB_C, INPUT);
+  pinMode(outputA_C, INPUT_PULLUP);
+  pinMode(outputB_C, INPUT_PULLUP);
 
   pinMode(InA_motorC, OUTPUT);
   pinMode(InB_motorC, OUTPUT);
@@ -150,7 +150,6 @@ void setup() {
   // setpointArray[1] = 3.0;
   // setpointArray[2] = 3.0;
 }
-
 void loop() {
   // Serial.println(millis() - last_time);
   if (Serial.available() > 0) {
@@ -203,7 +202,7 @@ void loop() {
     // Serial.print(", ");
     // Serial.print(encoderB_.radps);
     // Serial.print(", ");
-    // Serial.print(encoderC_.radps);
+    // Serial.println(encoderC_.radps);
     // Serial.print(", ");
     // Serial.print(uA);
     // Serial.print(", ");
@@ -212,5 +211,8 @@ void loop() {
     // Serial.println(uC);
     
     // Serial.println(millis() - last_time);
+    // Serial.print(digitalRead(outputA_C));
+    // Serial.print(", ");
+    // Serial.println(digitalRead(outputB_C));
   }
 }

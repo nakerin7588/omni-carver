@@ -143,6 +143,7 @@ class OmniDriveNode(Node):
                 self.x = 0.0
                 self.y = 0.0
                 self.w = 0.0
+                self.w_t_1 = 0.0
                 self.vx = 0.0
                 self.vy = 0.0
                 
@@ -200,6 +201,7 @@ class OmniDriveNode(Node):
 
         # self.tf_broadcaster.sendTransform(t)
         self.odom_pub.publish(odom)
+        self.get_logger().info('Robot odometry: x: %f, y: %f, theta: %f' % (self.robot_wheelodom.x, self.robot_wheelodom.y, self.robot_wheelodom.theta))
         
     def publish_joint_speed(self, q):
         msg = Float64MultiArray()
@@ -268,9 +270,11 @@ class OmniDriveNode(Node):
         x_t_1 = self.robot_wheelodom.x
         y_t_1 = self.robot_wheelodom.y
         
-        self.robot_wheelodom.theta = theta_t_1 + self.robot_wheelodom.w * 1/self.rate
+        self.robot_wheelodom.theta = theta_t_1 + (self.robot_wheelodom.w * 1/self.rate)
         self.robot_wheelodom.x = x_t_1 + (self.robot_wheelodom.vx*np.cos(theta_t_1) - self.robot_wheelodom.vy*np.sin(theta_t_1))*1/self.rate
         self.robot_wheelodom.y = y_t_1 + (self.robot_wheelodom.vx*np.sin(theta_t_1) + self.robot_wheelodom.vy*np.cos(theta_t_1))*1/self.rate
+        
+        self.robot_wheelodom.w_t_1 = self.robot_wheelodom.w
         
 def main(args=None):
     rclpy.init(args=args)

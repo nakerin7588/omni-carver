@@ -202,9 +202,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 239
+      Max Intensity: 238
       Min Color: 0; 0; 0
-      Min Intensity: 171
+      Min Intensity: 12
       Name: LaserScan
       Position Transformer: XYZ
       Selectable: true
@@ -237,9 +237,9 @@ Visualization Manager:
           Color: 204; 51; 204
           Scale: 1
           Value: true
-        Value: true
+        Value: false
       Enabled: true
-      Keep: 10
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -277,8 +277,8 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: false
-      Keep: 10
+      Enabled: true
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -298,7 +298,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /wheel/odom
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -345,25 +345,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 31.8610897064209
+      Distance: 2.978829860687256
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.5867403745651245
-        Y: 0.8494196534156799
-        Z: 1.1818217039108276
+        X: -0.42029091715812683
+        Y: 0.42718157172203064
+        Z: 1.5521551370620728
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9897963404655457
+      Pitch: 1.1147964000701904
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.21720845997333527
+      Yaw: 2.6972124576568604
     Saved: ~
 Window Geometry:
   Displays:
