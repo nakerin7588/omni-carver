@@ -12,7 +12,7 @@ import tf2_ros
 from geometry_msgs.msg import TransformStamped
 
 class forward_kinematics:
-    def __init__(self, wheel_base=0.065, wheel_radius = 0.075):
+    def __init__(self, wheel_base=0.295, wheel_radius = 0.075):
         self.wheel_radius = wheel_radius
         self.wheel_base = wheel_base
         self.twist = np.array([0.0, 0.0, 0.0]) # linear velocity x, y and angular velocity z
@@ -54,7 +54,7 @@ class forward_kinematics:
         return self.twist
 
 class inverse_kinematics:
-    def __init__(self, wheel_base=0.065, wheel_radius = 0.075):
+    def __init__(self, wheel_base=0.295, wheel_radius = 0.075):
         self.wheel_base = wheel_base
         self.wheel_radius = wheel_radius
         
@@ -98,7 +98,7 @@ class OmniDriveNode(Node):
         super().__init__('omni_drive_node')
         
         self.declare_parameter('wheel_radius', 0.075)
-        self.declare_parameter('wheel_base', 0.065)
+        self.declare_parameter('wheel_base', 0.295)
         self.declare_parameter('rate', 100) # Hz
         
         # Get the parameters
