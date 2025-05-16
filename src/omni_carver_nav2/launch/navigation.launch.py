@@ -15,7 +15,7 @@ def generate_launch_description():
     
     # กำหนดตำแหน่งไฟล์ configuration ต่างๆ
     rviz_config_file = os.path.join(my_nav_pkg_dir, 'rviz', 'navigation_defaut_view.rviz')
-    map_yaml_file = os.path.join(my_nav_pkg_dir, 'maps', 'map_5.yaml')
+    map_yaml_file = os.path.join(my_nav_pkg_dir, 'maps', 'map_7.yaml')
     params_file = os.path.join(my_nav_pkg_dir, 'config', 'nav2_params.yaml')
     
     # สร้าง LaunchConfigurations สำหรับการกำหนด argument
