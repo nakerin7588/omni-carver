@@ -122,7 +122,7 @@ class OmniDriveNode(Node):
         self.forward_kinematics = forward_kinematics(self.wheel_base, self.wheel_radius)
         
         # Get the inverse kinematics
-        self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
+        self.create_subscription(Twist, '/cmd_vel_smoothed', self.cmd_vel_callback, 10)
         self.inverse_kinematics = inverse_kinematics(self.wheel_base, self.wheel_radius)
         
         # Get the initial_2d message from either Rviz clicks or a manual pose publisher

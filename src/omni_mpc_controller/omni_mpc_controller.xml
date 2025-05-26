@@ -1,0 +1,10 @@
+<library path="omni_mpc_controller">
+  <class
+    name="OmniMPCController"
+    type="omni_mpc_controller::OmniMPCController"
+    base_class_type="nav2_core::Controller">
+    <description>
+      MPPI-based omnidirectional MPC Controller plugin.
+    </description>
+  </class>
+</library>

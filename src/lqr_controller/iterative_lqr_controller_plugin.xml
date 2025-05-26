@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<library path="libiterative_lqr_controller">
+  <class
+    
+    type="iterative_lqr_controller::IterativeLQRController"
+    base_class_type="nav2_core::Controller">
+    <description>
+      Iterative‐LQR controller plugin for Nav2 (omnidirectional model).
+    </description>
+  </class>
+</library>

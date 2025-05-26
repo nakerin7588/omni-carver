@@ -14,7 +14,7 @@ def generate_launch_description():
     my_nav_pkg_dir = get_package_share_directory('omni_carver_nav2')
     
     # กำหนดตำแหน่งไฟล์ configuration ต่างๆ
-    rviz_config_file = os.path.join(my_nav_pkg_dir, 'rviz', 'navigation_defaut_view.rviz')
+    rviz_config_file = os.path.join(my_nav_pkg_dir, 'rviz', 'navigation_default_view.rviz')
     map_yaml_file = os.path.join(my_nav_pkg_dir, 'maps', 'map_7.yaml')
     params_file = os.path.join(my_nav_pkg_dir, 'config', 'nav2_params.yaml')
     
@@ -49,7 +49,7 @@ def generate_launch_description():
     
     # รวม launch file ของ nav2_bringup ซึ่งจะเริ่ม node หลักของ navigation
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(nav2_bringup_dir, 'launch', 'bringup_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(my_nav_pkg_dir, 'launch', 'bringup_launch.py')),
         launch_arguments={
             'slam': slam,
             'map': map_yaml_file,
@@ -69,7 +69,6 @@ def generate_launch_description():
         }.items()
     )
     
-    # UNCOMMENT HERE FOR KEEPOUT DEMO
     # start_lifecycle_manager_cmd = Node(
     #         package='nav2_lifecycle_manager',
     #         executable='lifecycle_manager',
