@@ -1,26 +1,32 @@
 <?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>omni_mpc_controller</name>
-  <version>0.1.0</version>
-  <description>
-    MPPI-based omnidirectional MPC controller plugin for ROS2 Navigation2 (Jazzy).
-  </description>
-
-  <maintainer email="you@example.com">Your Name</maintainer>
+  <version>0.0.0</version>
+  <description>Omni-directional MPC controller plugin for Nav2</description>
+  <maintainer email="your.email@example.com">Your Name</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>rclcpp</depend>
   <depend>rclcpp_lifecycle</depend>
   <depend>nav2_core</depend>
+  <depend>nav2_util</depend>
   <depend>nav2_costmap_2d</depend>
-  <depend>tf2_ros</depend>
-  <depend>tf2_geometry_msgs</depend>
+  <depend>pluginlib</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
-  <depend>pluginlib</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>eigen3_cmake_module</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <nav2_core plugin="omni_mpc_controller.xml"/>
+    <build_type>ament_cmake</build_type>
+    <nav2_core plugin="${prefix}/omni_mpc_controller.xml" />
   </export>
 </package>

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(omni_carver_controller)
+project(omni_carver_scheduler)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -17,7 +17,6 @@ endif()
 
 ################ FIND DEPENDENCIES  #################
 find_package(ament_cmake REQUIRED)		# cpp (optional)
-find_package(rclcpp REQUIRED)			# cpp (optional)
 find_package(ament_cmake_python REQUIRED)   	# python (optional)
 find_package(rclpy REQUIRED)                	# python (optional)
 ######################################################
@@ -27,29 +26,14 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/omni_drive_node_script.py
+  scripts/scheduler_node_script.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
-
-# Include Cpp "include" directory
-include_directories(include)
-
-# Create Cpp executable
-add_executable(cpp_node_test src/cpp_node.cpp)
-ament_target_dependencies(cpp_node_test rclcpp)
-
-# Install Cpp executables
-install(TARGETS
-  cpp_node_test
-  DESTINATION lib/${PROJECT_NAME}
-)
 
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
   # add directories here
-  config
-  launch
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()

@@ -122,7 +122,7 @@ class OmniDriveNode(Node):
         self.forward_kinematics = forward_kinematics(self.wheel_base, self.wheel_radius)
         
         # Get the inverse kinematics
-        self.create_subscription(Twist, '/cmd_vel_smoothed', self.cmd_vel_callback, 10)
+        self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
         self.inverse_kinematics = inverse_kinematics(self.wheel_base, self.wheel_radius)
         
         # Get the initial_2d message from either Rviz clicks or a manual pose publisher
@@ -221,8 +221,8 @@ class OmniDriveNode(Node):
     def cmd_vel_callback(self, msg:Twist):
         q = self.inverse_kinematics.calculate(msg.angular.z, msg.linear.x, msg.linear.y)
         self.publish_joint_speed(q)
-        self.get_logger().info('Wheel RPM: Right: %f, Left: %f, Back: %f' % (q[0], q[1], q[2]))
-        self.get_logger().info('Robot velocity: x: %f, y: %f, z: %f' % (msg.linear.x, msg.linear.y, msg.angular.z))
+        # self.get_logger().info('Wheel RPM: Right: %f, Left: %f, Back: %f' % (q[0], q[1], q[2]))
+        # self.get_logger().info('Robot velocity: x: %f, y: %f, z: %f' % (msg.linear.x, msg.linear.y, msg.angular.z))
         
     def joint_states_callback(self, msg:JointState):
         # Initialize indices

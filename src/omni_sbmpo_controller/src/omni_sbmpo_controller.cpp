@@ -1,33 +1,30 @@
-#include "omni_mpc_controller/omni_mpc_controller.hpp"
+#include "omni_sbmpo_controller/omni_sbmpo_controller.hpp"
 
-#include "rclcpp/logging.hpp"                // for RCLCPP_INFO
+#include "rclcpp/logger.hpp"
+#include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "tf2/utils.h"
 #include "pluginlib/class_list_macros.hpp"
 
-namespace omni_mpc_controller
+namespace omni_sbmpo_controller
 {
 
-void OmniMPCController::configure(
+void OmniSBMPOController::configure(
   const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
   std::string name,
   std::shared_ptr<tf2_ros::Buffer> tf_buffer,
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
-  auto node = parent.lock();
-  tf_buffer_   = tf_buffer;
   costmap_ros_ = costmap_ros;
+  tf_buffer_ = tf_buffer;
+  auto node = parent.lock();
 
-  // declare & read parameters under "<name>.*"
-  horizon_     = node->declare_parameter(name + ".horizon", horizon_);
-  dt_          = node->declare_parameter(name + ".model_dt", dt_);
-  num_v_       = node->declare_parameter(name + ".num_samples_v", num_v_);
-  num_w_       = node->declare_parameter(name + ".num_samples_w", num_w_);
-  vx_max_      = node->declare_parameter(name + ".vx_max", vx_max_);
-  vx_min_      = node->declare_parameter(name + ".vx_min", vx_min_);
-  vy_max_      = node->declare_parameter(name + ".vy_max", vy_max_);
-  vy_min_      = node->declare_parameter(name + ".vy_min", vy_min_);
-  wz_max_      = node->declare_parameter(name + ".wz_max", wz_max_);
-  wz_min_      = node->declare_parameter(name + ".wz_min", wz_min_);
+  // Declare & read SBMPO parameters under <name>.
+  horizon_   = node->declare_parameter(name + ".horizon", horizon_);
+  dt_        = node->declare_parameter(name + ".dt", dt_);
+  num_v_     = node->declare_parameter(name + ".num_samples_v", num_v_);
+  num_w_     = node->declare_parameter(name + ".num_samples_w", num_w_);
+  v_max_     = node->declare_parameter(name + ".v_max", v_max_);
+  w_max_     = node->declare_parameter(name + ".w_max", w_max_);
   obstacle_weight_         = node->declare_parameter(name + ".obstacle_weight", obstacle_weight_);
   path_weight_             = node->declare_parameter(name + ".path_weight", path_weight_);
   forward_reward_          = node->declare_parameter(name + ".forward_reward", forward_reward_);
@@ -37,29 +34,46 @@ void OmniMPCController::configure(
   clearance_penalty_weight_= node->declare_parameter(name + ".clearance_penalty_weight", clearance_penalty_weight_);
 
   RCLCPP_INFO(
-    node->get_logger(), "Configured OmniMPCController '%s'", name.c_str());
+    node->get_logger(), "Configured OmniSBMPOController '%s'", name.c_str());
 }
 
-geometry_msgs::msg::TwistStamped OmniMPCController::computeVelocityCommands(
+void OmniSBMPOController::cleanup()
+{
+  // nothing to clean up
+}
+
+void OmniSBMPOController::activate()
+{
+  // nothing to activate
+}
+
+void OmniSBMPOController::deactivate()
+{
+  // nothing to deactivate
+}
+
+geometry_msgs::msg::TwistStamped OmniSBMPOController::computeVelocityCommands(
   const geometry_msgs::msg::PoseStamped & pose,
-  const geometry_msgs::msg::Twist & /*velocity*/,
+  const geometry_msgs::msg::Twist & velocity,
   nav2_core::GoalChecker * checker)
 {
-  // 1) if goal reached, return zero
-  if (checker && checker->isGoalReached(pose.pose, last_goal_.pose, geometry_msgs::msg::Twist{})) {
-    return geometry_msgs::msg::TwistStamped();
+  // 1) check if goal already reached
+  if (checker && checker->isGoalReached(pose.pose, last_goal_.pose, velocity)) {
+    return geometry_msgs::msg::TwistStamped{};  // all zero
   }
 
-  // 2) sample (v,w) grid
+  // 2) search best (v,w)
   double best_cost = std::numeric_limits<double>::infinity();
   double best_v = 0.0, best_w = 0.0;
+  Trajectory best_traj;
 
   for (int i = 0; i < num_v_; ++i) {
-    double v = vx_min_ + (vx_max_ - vx_min_) * double(i) / (num_v_ - 1);
+    // sample in [−v_max, +v_max]
+    double v = v_max_ * (2.0 * i / (num_v_-1) - 1.0);
     for (int j = 0; j < num_w_; ++j) {
-      double w = wz_min_ + (wz_max_ - wz_min_) * double(j) / (num_w_ - 1);
+      double w = w_max_ * (2.0 * j / (num_w_-1) - 1.0);
 
-      // apply global speed limit if set
+      // apply optional global speed limit
       double v_cmd = v, w_cmd = w;
       if (speed_limit_ > 0.0) {
         if (speed_percentage_) {
@@ -71,26 +85,25 @@ geometry_msgs::msg::TwistStamped OmniMPCController::computeVelocityCommands(
         }
       }
 
-      auto result = simulateTrajectory(pose.pose, v_cmd, w_cmd);
-      double cost = result.first;
+      auto [cost, traj] = simulateTrajectory(pose.pose, v_cmd, w_cmd);
       if (cost < best_cost) {
         best_cost = cost;
         best_v = v_cmd;
         best_w = w_cmd;
+        best_traj = std::move(traj);
       }
     }
   }
 
-  // 3) publish best
+  // 3) return the winner
   geometry_msgs::msg::TwistStamped cmd;
   cmd.header = pose.header;
   cmd.twist.linear.x  = best_v;
-  cmd.twist.linear.y  = 0.0;
   cmd.twist.angular.z = best_w;
   return cmd;
 }
 
-void OmniMPCController::setPlan(const nav_msgs::msg::Path & path)
+void OmniSBMPOController::setPlan(const nav_msgs::msg::Path & path)
 {
   path_ = path;
   if (!path_.poses.empty()) {
@@ -98,7 +111,7 @@ void OmniMPCController::setPlan(const nav_msgs::msg::Path & path)
   }
 }
 
-void OmniMPCController::setSpeedLimit(
+void OmniSBMPOController::setSpeedLimit(
   const double & speed_limit,
   const bool & percentage)
 {
@@ -106,24 +119,25 @@ void OmniMPCController::setSpeedLimit(
   speed_percentage_ = percentage;
 }
 
-std::pair<double, OmniMPCController::Trajectory>
-OmniMPCController::simulateTrajectory(
+std::pair<double, OmniSBMPOController::Trajectory>
+OmniSBMPOController::simulateTrajectory(
   const geometry_msgs::msg::Pose & start,
   double v, double w)
 {
+  // state
   double x   = start.position.x;
   double y   = start.position.y;
   double yaw = tf2::getYaw(start.orientation);
 
   int steps = int(horizon_ / dt_);
   double total_cost = 0.0;
-  int    min_cost   = std::numeric_limits<int>::max();
+  int min_cost = std::numeric_limits<int>::max();
   Trajectory traj; traj.reserve(steps);
 
-  // costmap info
-  auto cm     = costmap_ros_->getCostmap()->getCharMap();
-  auto width  = costmap_ros_->getCostmap()->getSizeInCellsX();
-  auto height = costmap_ros_->getCostmap()->getSizeInCellsY();
+  // costmap data
+  auto cm = costmap_ros_->getCostmap()->getCharMap();  // signed char flat
+  unsigned int width  = costmap_ros_->getCostmap()->getSizeInCellsX();
+  unsigned int height = costmap_ros_->getCostmap()->getSizeInCellsY();
   double res  = costmap_ros_->getCostmap()->getResolution();
   double ox   = costmap_ros_->getCostmap()->getOriginX();
   double oy   = costmap_ros_->getCostmap()->getOriginY();
@@ -134,9 +148,10 @@ OmniMPCController::simulateTrajectory(
     y   += v * std::sin(yaw) * dt_;
     yaw += w * dt_;
 
+    // cell coords
     int mx = int((x - ox) / res);
     int my = int((y - oy) / res);
-    int c  = 100;  // default obstacle
+    int c = 100;  // out‐of‐bounds means obstacle
     if (mx >= 0 && my >= 0 && mx < int(width) && my < int(height)) {
       int idx = my * width + mx;
       c = cm[idx] < 0 ? 50 : cm[idx];
@@ -154,15 +169,14 @@ OmniMPCController::simulateTrajectory(
       total_cost += obstacle_weight_ * (c / 100.0);
     }
 
-    // path‐tracking error to final goal
+    // path‐staying and forward bias (using final goal distance)
     double dx = x - last_goal_.pose.position.x;
     double dy = y - last_goal_.pose.position.y;
-    total_cost += path_weight_ * std::hypot(dx, dy);
-
-    // forward reward
+    double err = std::hypot(dx, dy);
+    total_cost += path_weight_ * err;
     total_cost -= forward_reward_ * v;
 
-    // record trajectory (for viz)
+    // record for visualization
     geometry_msgs::msg::Pose p;
     p.position.x = x;
     p.position.y = y;
@@ -171,13 +185,11 @@ OmniMPCController::simulateTrajectory(
     traj.push_back(p);
   }
 
-  // clearance penalty
+  // final clearance penalty
   total_cost += clearance_penalty_weight_ * min_cost;
   return {total_cost, traj};
 }
 
-}  // namespace omni_mpc_controller
+}  // namespace omni_sbmpo_controller
 
-PLUGINLIB_EXPORT_CLASS(
-  omni_mpc_controller::OmniMPCController,
-  nav2_core::Controller)
+PLUGINLIB_EXPORT_CLASS(omni_sbmpo_controller::OmniSBMPOController, nav2_core::Controller)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(omni_carver_controller)
+project(omni_user_interface)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -20,6 +20,8 @@ find_package(ament_cmake REQUIRED)		# cpp (optional)
 find_package(rclcpp REQUIRED)			# cpp (optional)
 find_package(ament_cmake_python REQUIRED)   	# python (optional)
 find_package(rclpy REQUIRED)                	# python (optional)
+find_package(omni_carver_interfaces REQUIRED)	# python (optional)
+find_package(nav2_msgs REQUIRED)			# python (optional)
 ######################################################
 
 # Install Python Module
@@ -27,7 +29,8 @@ ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 install(PROGRAMS
-  scripts/omni_drive_node_script.py
+  scripts/dummy_script.py
+  scripts/omni_user_interface.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -48,8 +51,7 @@ install(TARGETS
 ################ INSTALL LAUNCH, ETC #################
 install(DIRECTORY
   # add directories here
-  config
-  launch
+  element
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()

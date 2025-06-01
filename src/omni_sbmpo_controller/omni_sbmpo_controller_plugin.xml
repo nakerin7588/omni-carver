@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<library path="omni_sbmpo_controller">
+  <class
+    name="omni_sbmpo_controller::OmniSBMPOController"
+    type="omni_sbmpo_controller::OmniSBMPOController"
+    base_class_type="nav2_core::Controller">
+    <description>SBMPO local controller for omnidirectional robots</description>
+  </class>
+</library>

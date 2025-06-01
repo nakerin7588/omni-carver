@@ -52,7 +52,7 @@ class ArduinoSerialNode(Node):
         data_to_send = '{},{},{}\n'.format(int(msg.data[0]*1000), int(msg.data[1]*1000), int(msg.data[2]*1000))
         try:
             self.serial_port.write(data_to_send.encode())
-            self.get_logger().info('Data sent to microcontroller: %s' % data_to_send.strip())
+            # self.get_logger().info('Data sent to microcontroller: %s' % data_to_send.strip())
             
         except Exception as e:
             error_msg = 'Error sending data to microcontroller: %s' % str(e)

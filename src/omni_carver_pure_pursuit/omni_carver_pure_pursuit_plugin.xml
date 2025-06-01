@@ -1,0 +1,6 @@
+<class_libraries>
+    <library path="omni_carver_pure_pursuit">
+        <class type="omni_carver_pure_pursuit::PurePursuitController" base_class_type="nav2_core::Controller">
+        </class>
+    </library>
+</class_libraries>

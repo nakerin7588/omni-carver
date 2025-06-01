@@ -1,10 +1,9 @@
 <library path="omni_mpc_controller">
   <class
-    name="OmniMPCController"
     type="omni_mpc_controller::OmniMPCController"
     base_class_type="nav2_core::Controller">
     <description>
-      MPPI-based omnidirectional MPC Controller plugin.
+      A pared-down MPPI controller with just obstacle, path-follow, and forward-bias critics.
     </description>
   </class>
 </library>

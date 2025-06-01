@@ -47,8 +47,9 @@ def generate_launch_description():
         'behavior_server',
         'velocity_smoother',
         'bt_navigator',
-        'collision_monitor',
-        'waypoint_follower'
+        'waypoint_follower',
+        'filter_mask_server',
+        'costmap_filter_info_server'
     ]
 
     # Map fully qualified names to relative ones so the node's namespace can be prepended.
@@ -202,23 +203,26 @@ def generate_launch_description():
                 + [('cmd_vel', 'cmd_vel_nav')],
             ),
             Node(
+                package='nav2_map_server',
+                executable='map_server',
+                name='filter_mask_server',
+                output='screen',
+                emulate_tty=True,  # https://github.com/ros2/launch/issues/188
+                parameters=[configured_params]),
+            Node(
+                package='nav2_map_server',
+                executable='costmap_filter_info_server',
+                name='costmap_filter_info_server',
+                output='screen',
+                emulate_tty=True,  # https://github.com/ros2/launch/issues/188
+                parameters=[configured_params]),
+            Node(
                 package='nav2_lifecycle_manager',
                 executable='lifecycle_manager',
                 name='lifecycle_manager_navigation',
                 output='screen',
                 arguments=['--ros-args', '--log-level', log_level],
                 parameters=[{'autostart': autostart}, {'node_names': lifecycle_nodes}],
-            ),
-            Node(
-                package='nav2_collision_monitor',
-                executable='collision_monitor',
-                name='collision_monitor',
-                output='screen',
-                respawn=use_respawn,
-                respawn_delay=2.0,
-                parameters=[configured_params],
-                arguments=['--ros-args', '--log-level', log_level],
-                remappings=remappings,
             )
         ],
     )
@@ -281,12 +285,15 @@ def generate_launch_description():
                         + [('cmd_vel', 'cmd_vel_nav')],
                     ),
                     ComposableNode(
-                        package='nav2_collision_monitor',
-                        plugin='nav2_collision_monitor::CollisionMonitor',
-                        name='collision_monitor',
-                        parameters=[configured_params],
-                        remappings=remappings,
-                    ),
+                        package='nav2_map_server',
+                        plugin='nav2_map_server::MapServer',
+                        name='filter_mask_server',
+                        parameters=[configured_params]),
+                    ComposableNode(
+                        package='nav2_map_server',
+                        plugin='nav2_map_server::CostmapFilterInfoServer',
+                        name='costmap_filter_info_server',
+                        parameters=[configured_params]),
                     ComposableNode(
                         package='nav2_lifecycle_manager',
                         plugin='nav2_lifecycle_manager::LifecycleManager',
