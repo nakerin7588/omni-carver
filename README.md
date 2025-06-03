@@ -1,6 +1,5 @@
 # omni-carver
 
-https://github.com/user-attachments/assets/3435d6dd-67d6-426c-801f-3730e0f8ce20
 
 
 <!-- TABLE OF CONTENTS -->
@@ -10,36 +9,75 @@ https://github.com/user-attachments/assets/3435d6dd-67d6-426c-801f-3730e0f8ce20
         <a href="#about-the-project">About The Project</a>
     </li>
     <li>
+        <a href="#system-diagram">System diagram</a>
+    </li>
+    <li>
+        <a href="#using">Using</a>
+    </li>
+    <li>
         <a href="#hardware">Hardware</a>
     </li>
     <li>
         <a href="#firmware-setupesp32-firmware">Firmware setup</a>
     </li>
     <li>
-        <a href="#software-setupros2">Software setuo</a>
+        <a href="#software-setupros2">Software setup</a>
     </li>
     <li>
         <a href="#mapping">Mapping</a>
     </li>
     <li>
-        <a href="#demonstrate">Demonstrate</a>
+        <a href="#pure-pursuit-controller">Pure pursuit controller</a>
     </li>
     <li>
-        <a href="#issues">Issues</a>
+        <a href="#hybrid-a-star-planner">Hybrid A-star planner</a>
+    </li>
+    <li>
+        <a href="#navigation">Navigation</a>
+    </li>
+    <li>
+        <a href="#omni-carver-user-interface">Omni-carver user interface</a>
+    </li>    
+    <li>
+        <a href="#further-improvement">Further improvement</a>
     </li>
     <li>
         <a href="#contributors">Contributors</a>
     </li>
 </ol>
 
-
 # About The Project
 
-This project is the part of open-topic research of FRA361 class that focus about how to getting map with actual robot by create new firmware of robot to using slam toolbox for mapping.
+This project is the part of open-topic research of FRA361 and mobile robotics of FRA532 that focus about how to build the mobile robot based on 3 omni-wheels platform.
+
+# System diagram
+
+<p align="center"><img src="images/system-diagram.jpg" alt="system diagram" /></p>
+
+# Using
+
+To run this project you need to plug all sensor into NUC and ESP32 too(Plug EPS32 first). Next is run this command:
+
+```
+ros2 launch omni_carver_bringup omni_carver_autonomous_bringup.launch.py
+```
+
+> [!WARN]
+> When build this project you need to skip omni_carver_mpc_controller package because it has bug via this command `colcon build --package-skip omni_carver_mpc_controller`
+
+After run this command you will see the RVIZ2 window show on the display.
+
+Next run this command to open UI:
+
+```
+ros2 run omni_user_interface omni_user_interface.py
+```
 
 # Hardware
 
 ## 1. 3 omni-wheels mobile robot.
+
+<p align="center"><img src="images/Actual robot/20250529_070800.jpg" alt="actual robot" /></p>
 
 ## 2. Laser Sensor
 
@@ -56,6 +94,9 @@ This project is the part of open-topic research of FRA361 class that focus about
 ## 5. Processor
 
 - Intel NUC
+
+> [!NOTE]
+> NUC's password is 123456
 
 # Firmware setup(ESP32 Firmware)
 
@@ -188,39 +229,188 @@ See in <a href="src/omni_carver_description/launch/description.launch.py">descri
 
 See in <a href="src/omni_carver_localization/launch/ekf.launch.py">ekf.launch.py</a>. This package has contain launch file for EKF from robot localization package to filt wheel odometry and imu togeter to make odometry of robot more smooth and accurate. For robot localization config, I use this guide to custom my config.
 
-> !WARNING
+> [!WARNING]
 > At this moment robot have a lot of error form sensor such as IMU or wheel encoder. So it need to tune more to make odometry more accurate. Additionally, to use this launch file you need to install robot localization package via this command: `sudo apt install ros-jazzy-robot-localization`
 
 ## 7. omni_carver_slam
 
 See in <a href="src/omni_carver_slam/launch/mapping.launch.py">mapping.launch.py</a>. This pacakge has contain launch file for mapping and save map via slam toolbox and nav2.
 
-> !WARNING
+> [!WARNING]
 > To use this launch file you need to install slam toolbox and nav2 via this command:
 `sudo apt install ros-jazzy-slam-toolbox`, `sudo apt install ros-jazzy-navigation2`, and `sudo apt install ros-jazzy-nav2-bringup`
 
-> !TIP
+> [!TIP]
 > To launch all launch files that make robot can do mapping run this command `ros2 launch omni_carver_bringup omni_carver_bringup.launch.py`. This launch file will bringup every important launch file for this robot.
+
+## 8. omni_carver_nav2
+
+See in <a href="src/omni_carver_nav2/launch/bringup_launch.py">bringup_launch.py</a>. This package has contain custom launch file for nav2. They have amcl, bt, and other package for navigate the robot.
+
+> [!WARNING]
+> To use this launch file you need to install nav2 via this command:
+`sudo apt install ros-jazzy-navigation2`, and `sudo apt install ros-jazzy-nav2-bringup`
+
+> [!TIP]
+> To launch all launch files that make robot can navigate run this command `ros2 launch omni_carver_bringup omni_carver_bringup.launch.py`. This launch file will bringup every important launch file for this robot.
+
+## 9. omni_carver_scheduler
+
+See in <a href="src/omni_carver_scheduler/scripts/scheduler_node_script.py">scheduler_node_script.py</a>. This package will manage the mode of robot that have difference velocity command topic. So this package will select actual velocity source to move the robot.
+
+## 10. omni_carver_pure_pursuit
+
+See in <a href="src/omni_carver_pure_pursuit/src/omni_carver_pure_pursuit.cpp">omni_carver_pure_pursuit.cpp</a>. This package is coding based on nav2 plugin that contain importance function to make this robot can use this controller via nav2 stack.
+
+## 11. omni_carver_pure_pursuit
+
+See in <a href="src/hybrid_astar_planner/src/hybrid_astar_planner.cpp">hybrid_astar_planner.cpp</a>. This package is coding based on nav2 plugin that contain importance function to make this robot can use planner via nav2 stack.
 
 # Mapping
 
 After launch `omni_carver_bringup`, you can also launch `ros2 launch omni_carver_slam mapping.launch.py`. It will show up rviz2 window that already presetting for do mapping via slam toolbox. After finish mapping, you can launch
 `ros2 launch omni_carver_slam save_map.launch.py` to save map.
 
-> !TIP
+> [!TIP]
 > To do mapping, I recommend you to move slowly for more accurate map. And after save map, map will appear at home directory.
 
-# Demonstrate
 
-https://github.com/user-attachments/assets/e033a0e5-0f04-4321-bec6-3be6cb211be1
 
-# Issues
+<p align="center"><img src="images/Map/3f_2.png" /></p>
 
-1. Old robot stucture has some problem that effected to imu and wheel odometry.
-2. Swing imu data, from first issue that effected direct to imu make imu data lose accuracy.
-3. Lidar has found some part of robot that make map creation error.
-4. Wheel PID tuning is not good, make robot can't reach the setpoint.
-5. Robot jerks when it starts walking and stops walking.
+# Pure pursuit controller
+
+This controller has build based on <a href="https://docs.nav2.org/plugin_tutorials/docs/writing_new_nav2controller_plugin.html">NAV2 tutorial</a> and Mobile robotics class.
+
+# Hybrid A-star planner
+
+Hybrid A* is an extension of the classical A* search that operates in a continuous, non-holonomic state space:
+
+$$\mathcal{S} = \{(x, y, \theta)\}$$
+
+by expanding along kinematically feasible motion primitives. Periodically, an analytic connection (e.g., Reeds–Shepp or Dubins) is attempted to the goal to improve smoothness and near-optimality.
+
+## Governing Equations
+
+### 1. State update (motion primitive)
+
+A primitive of length $L$ and steering angle $\delta$ induces:
+
+$$R(\delta) = \frac{L_{\mathrm{wb}}}{\tan\delta}, \quad \Delta\theta = \frac{L}{R(\delta)}$$
+
+$$\theta' = \theta + \Delta\theta, \quad x' = x + L \cos\Bigl(\theta + \tfrac{\Delta\theta}{2}\Bigr), \quad y' = y + L \sin\Bigl(\theta + \tfrac{\Delta\theta}{2}\Bigr)$$
+
+where $L_{\mathrm{wb}}$ is the vehicle wheelbase.
+
+### 2. Cost function
+
+The incremental cost of moving from state $s_i$ to $s_j$ is:
+
+$$c(s_i, s_j) = w_{\mathrm{length}}\,L \;+\; w_{\mathrm{penalty}}\,P(s_i, s_j)$$
+
+where $P(\cdot)$ penalizes undesirable maneuvers (e.g., reversing or sharp turns). The total cost-to-come is:
+
+$g(s_j) = g(s_i) + c(s_i, s_j)$
+
+### 3. Heuristic
+
+An admissible heuristic combines Euclidean and non-holonomic estimates:
+
+$$h_{\mathrm{Euc}}(s) = \sqrt{(x - x_g)^2 + (y - y_g)^2}, \quad h(s) = \max\{\,h_{\mathrm{Euc}}(s),\,h_{\mathrm{RS}}(s)\}$$
+
+where $h_{\mathrm{RS}}$ is the Reeds–Shepp distance between $(x,y,\theta)$ and the goal $(x_g,y_g,\theta_g)$.
+
+## Parameters
+
+| Parameter                    | Symbol                        | Description                                                    | Typical Value           |
+|------------------------------|-------------------------------|----------------------------------------------------------------|-------------------------|
+| Primitive length             | $L$                         | Distance per expansion step                                    | 0.5 m                  |
+| Steering discretization      | $\{\delta_k\}$              | Set of allowed steering angles                                 | $\{-0.3,0,+0.3\}$ rad |
+| Analytic-expansion frequency | $N_{\mathrm{AE}}$           | Attempt analytic connect every $N_{\mathrm{AE}}$ expansions  | 20                      |
+| Cost weight (length)         | $w_{\mathrm{length}}$       | Multiplier on $L$                                            | user-tunable            |
+| Cost weight (penalty)        | $w_{\mathrm{penalty}}$      | Multiplier on motion penalties (reverse, curvature, etc.)      | user-tunable            |
+| Goal tolerance (position)    | $\epsilon_{xy}$             | Distance threshold to trigger analytic expansion               | 0.5 m                   |
+| Goal tolerance (heading)     | $\epsilon_{\theta}$         | Heading threshold to accept goal                               | 5°                      |
+| Wheelbase                    | $L_{\mathrm{wb}}$           | Vehicle wheelbase used in turning radius calculation           | e.g., 2.5 m             |
+
+> [!TIP]
+> *Tuning these parameters trades off planning speed, path smoothness, and optimality.*
+
+## References
+
+1. Dolgov, D., Thrun, S., Montemerlo, M., & Diebel, J. (2008). *Path Planning for Autonomous Vehicles in Unknown Semi-structured Environments*. International Journal of Robotics Research.
+
+2. Pivtoraiko, M., Knepper, R. A., & Kelly, A. (2009). *Differentially Constrained Mobile Robot Motion Planning in State Lattices*. Journal of Field Robotics.
+
+3. Pivtoraiko, M., & Kelly, A. (2011). *Efficient Search-Based Kinodynamic Planning*. IEEE International Conference on Robotics and Automation.
+
+# Navigation
+
+
+
+# Omni-carver user interface
+
+This Python/ROS2 application provides a single, unified GUI—built with **pygame**—for both **manual teleoperation** and **Nav2-based autonomous navigation** of an omni-directional robot. From a top-down map view you can:
+
+- Switch between **Teleoperation** and **Autonomous** modes
+- In Teleop, drive the robot via a draggable on-screen joystick and angular controls
+- In Autonomous, define a 2D "goal pose" or multiple "via points" (each with position + heading) directly by click-and-drag on the map, then send them to Nav2
+- See live AMCL localization, teleop/autonomous velocity feedback, and a heartbeat indicator for system health
+
+## Key Functionalities
+
+### 1. Mode Selection
+- Initial placeholder "Choose…", then pick **Teleoperation** or **Autonomous**
+- Automatically calls `omni_carver/mode` service on changes
+
+### 2. Teleoperation
+- **Joystick**: click & drag inside a circular widget → smooth `<Twist>` on `/cmd_vel_teleop`
+- **Rotation controls**: ←/→ buttons plus "Max ω" dropdown
+- **Gauges**: real-time Lin X, Lin Y, Ang readings (from teleop or `/cmd_vel` feedback)
+
+### 3. Autonomous Navigation
+
+#### Goal Pose
+1. Click "Goal pose" → clears previous markers
+2. Click & **hold-drag** on map: defines `(x,y,yaw)` by drag direction
+3. Release → sends a `NavigateToPose` action goal
+4. Draws final red circle + arrow showing target orientation
+
+#### Via-Points
+1. Click "Set via point" → click-drag to define each waypoint's `(x,y,yaw)`
+2. Accumulates blue numbered markers with orientation arrows
+3. "Navigate" button → sequentially sends each waypoint to Nav2
+
+#### Clear-on-New
+Selecting a new goal or via resets existing markers
+
+### 4. Map & Localization
+- Loads PGM map + `resolution`/`origin` from `map.yaml`
+- Subscribes to `/amcl_pose` and draws a green circle + heading line at the robot's current estimate
+
+### 5. Heartbeat Indicator
+- Subscribes to Empty messages on `omni_carver/heartbeat`
+- If no heartbeat for > 7 s → shows **red**; otherwise **green**
+
+### 6. Non-Blocking UI Loop
+- Combines `pygame` event loop with `rclpy.spin_once(...)` and frame‐rate limiting (`clock.tick(60)`)
+- Ensures smooth rendering, responsive input, and live ROS callbacks
+
+<p align="center"><img src="images/user-interface.png" /></p>
+
+# Further improvement
+
+1. Tuning PID controller in low-level control(ESP32).
+2. Change pwm's frequency that drive motor.
+3. Create new map for other floor at FIBO.
+4. Tuning EKF to make robot odometry more accurate.
+5. Tuning AMCL to make robot localize more accurate.
+6. Coding global planner to add some function that relate to nav2 plugin.
+7. Coding new local planner such as MPC controller, LQR controller or etc, based on nav2 plugin to make robot can avoid obstacles using local cost map data.
+8. Coding Behavior tree plugin based on nav2 plugin to control robot's behavior such as regenerate new path if robot stuck at corner.
+9. Coding anouther plugin of nav2.
+10. Make this robot can navigate multi-floor.
 
 # Contributors
 - Nakarin Jettanatummajit (65340500033)
+- Karanyaphas Chitsuebsai (65340500065)
