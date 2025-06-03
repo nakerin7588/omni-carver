@@ -1,6 +1,6 @@
 # omni-carver
 
-
+https://github.com/user-attachments/assets/ef4664e7-ccda-4c08-aa3f-8ea90e89929b
 
 <!-- TABLE OF CONTENTS -->
 # Table of Contents
@@ -344,10 +344,6 @@ where $h_{\mathrm{RS}}$ is the Reeds–Shepp distance between $(x,y,\theta)$ and
 
 3. Pivtoraiko, M., & Kelly, A. (2011). *Efficient Search-Based Kinodynamic Planning*. IEEE International Conference on Robotics and Automation.
 
-# Navigation
-
-
-
 # Omni-carver user interface
 
 This Python/ROS2 application provides a single, unified GUI—built with **pygame**—for both **manual teleoperation** and **Nav2-based autonomous navigation** of an omni-directional robot. From a top-down map view you can:
@@ -397,6 +393,14 @@ Selecting a new goal or via resets existing markers
 - Ensures smooth rendering, responsive input, and live ROS callbacks
 
 <p align="center"><img src="images/user-interface.png" /></p>
+
+# Demonstrate
+
+https://github.com/user-attachments/assets/811c1a70-ac64-4048-8df0-57d52a2908b2
+
+https://github.com/user-attachments/assets/c5343f66-4aa2-45ce-a17f-9282ac09b9c5
+
+https://github.com/user-attachments/assets/d23895d3-7205-43cc-9bc3-8330406a1674
 
 # Further improvement
 
