@@ -33,11 +33,11 @@ https://github.com/user-attachments/assets/ef4664e7-ccda-4c08-aa3f-8ea90e89929b
         <a href="#hybrid-a-star-planner">Hybrid A-star planner</a>
     </li>
     <li>
-        <a href="#navigation">Navigation</a>
+        <a href="#omni-carver-user-interface">Omni-carver user interface</a>
     </li>
     <li>
-        <a href="#omni-carver-user-interface">Omni-carver user interface</a>
-    </li>    
+        <a href="#demonstrate">Demonstrate</a>
+    </li>
     <li>
         <a href="#further-improvement">Further improvement</a>
     </li>
