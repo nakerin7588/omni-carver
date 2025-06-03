@@ -402,6 +402,9 @@ https://github.com/user-attachments/assets/c5343f66-4aa2-45ce-a17f-9282ac09b9c5
 
 https://github.com/user-attachments/assets/d23895d3-7205-43cc-9bc3-8330406a1674
 
+> [!NOTE]
+> All demonstrate video has speed up(x2).
+
 # Further improvement
 
 1. Tuning PID controller in low-level control(ESP32).
